@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+# Music Player App
+Music Player App là một ứng dụng nghe nhạc trực tuyến được phát triển bởi GoiliAce. Ứng dụng cho phép người dùng nghe nhạc từ nhiều thể loại khác nhau và có thể tìm kiếm bài hát yêu thích của mình.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Cài đặt
+Để chạy ứng dụng, trước hết bạn cần clone repository này và repository backend <a href='https://github.com/GoiliAce/doanvjpro-backend'>tại đây</a> trên máy của mình. Sau đó thực hiện các bước sau:
 
-## Available Scripts
+1. Cài đặt các dependencies bằng cách chạy lệnh sau trong terminal:
 
-In the project directory, you can run:
+``` bash
+npm install
+```
+2. Chạy server API từ repository backend.
 
-### `npm start`
+3. Chạy ứng dụng trên máy tính bằng lệnh:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+``` bash
+npm start
+```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Sử dụng
+#### Nghe nhạc
+Khi bắt đầu ứng dụng, bạn sẽ được đưa đến trang chính của ứng dụng, với danh sách bài hát phổ biến. Bạn có thể tìm kiếm bài hát yêu thích của mình bằng cách sử dụng thanh tìm kiếm ở đầu trang.
 
-### `npm test`
+Bạn có thể chọn bất kỳ bài hát nào từ danh sách và bắt đầu phát nhạc bằng cách bấm vào nút "Play". Nếu bạn muốn chuyển đến bài hát tiếp theo hoặc bài hát trước đó, bạn có thể bấm vào nút "Next" hoặc "Previous" tương ứng.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Nếu bạn muốn phát các bài hát ngẫu nhiên, bạn có thể bấm vào nút "Random".
 
-### `npm run build`
+#### Quản lý danh sách phát
+Bạn có thể tạo danh sách phát của riêng mình bằng cách bấm vào nút "New playlist". Bạn có thể thêm hoặc xoá bài hát từ danh sách phát của mình bằng cách bấm vào nút "Add to playlist" hoặc "Remove from playlist" tương ứng.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Đóng góp
+Nếu bạn gặp bất kỳ lỗi nào khi sử dụng ứng dụng này hoặc muốn đóng góp vào dự án, hãy liên hệ với chúng tôi qua email: caonguyengiahung442@gmail.com.
