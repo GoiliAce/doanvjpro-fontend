@@ -1,0 +1,28 @@
+.list-songs {
+    padding: 0 64px;
+}
+.song-item{
+    display: grid;
+    grid-template-columns: [index] 60px [first] 6fr [var1] 3fr [last] minmax(120px,1fr);
+    padding: 16px;
+    font-size: 16px;
+    color: #fff;
+    border-bottom: 1px solid #2e2e2e;
+}
+
+.song-item  div{
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+.song-item:first-child div{
+    font-family: 'Lato', sans-serif;
+    font-weight: 100;
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.song-item:not(:first-child):hover{
+    border-radius: 8px;
+    background-color: #3a3a3a;
+}

@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React, { createContext, useState } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import { Home } from './components/home/home'
+import $ from 'jquery';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Layout } from './components/Layout';
+import { Playlist } from './components/playlist/Playlist';
 
-function App() {
+
+export const HandleSongClickContext = createContext(null);
+
+export const CurrentSongContext = createContext(null);
+
+const App = () => {
+  const [currentIndex, setCurrentIndex] = useState(null);
+  const [currentSongs, setCurrentSongs] = useState([]);
+  const handleSongClick = ({index,songs}) => {
+    setCurrentIndex(index);
+    setCurrentSongs(songs);
+  };
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <CurrentSongContext.Provider value={[currentIndex,currentSongs,setCurrentIndex,setCurrentSongs]}>
+      <HandleSongClickContext.Provider value={handleSongClick}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />} >
+              <Route index element={<Home />} />
+              <Route path="playlist/:id" element={<Playlist />} />
+            </Route> 
+          </Routes>
+        </BrowserRouter>
+      </HandleSongClickContext.Provider>
+    </CurrentSongContext.Provider>
   );
-}
+};
 
 export default App;

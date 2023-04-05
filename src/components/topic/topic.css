@@ -1,0 +1,39 @@
+.topic-wrapper{
+    margin-bottom: 32px;
+}
+.topic-title{
+    color: #fff;
+}
+a{
+    text-decoration: none;
+}
+.topic-content{
+    padding: 20px 0px;
+}
+
+.topic-content .item{
+    background-color: #202020;
+    padding: 20px;
+    border-radius: 8px;
+}
+.topic-content .item:hover{
+    background-color: #363636;
+}
+.card-song-img{
+    margin-bottom: 15px;
+}
+.card-song-name{
+    color: #fff;
+    font-size: 1.2rem;
+}
+.card-song-artists{
+    color: #999;
+}
+.artists-link{
+    color: #999;
+}
+.artists-link:hover{
+    opacity: 1.2;
+    color: #fff;
+    text-decoration: none;
+}
