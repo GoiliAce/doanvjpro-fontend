@@ -12,12 +12,12 @@ a{
 }
 
 .topic-content .item{
-    background-color: #202020;
+    background-color: #151515;
     padding: 20px;
     border-radius: 8px;
 }
 .topic-content .item:hover{
-    background-color: #363636;
+    background-color: #202020;
 }
 .card-song-img{
     margin-bottom: 15px;

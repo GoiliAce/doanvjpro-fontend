@@ -3,9 +3,9 @@ import { useContext } from 'react';
 import axios from "axios";
 import "./MusicPlayer.css";
 import { CurrentSongContext } from "../../App";
-
+import API_BASE_URL from '../../config';
 export const MusicPlayer = () => {
-    const [currentIndex, currentSongs, setCurrentIndex,setCurrentSongs] = useContext(CurrentSongContext);
+    const [currentIndex, currentSongs, setCurrentIndex, setCurrentSongs] = useContext(CurrentSongContext);
     const [currentSong, setCurrentSong] = useState(currentSongs[currentIndex]);
     const [audio, setAudio] = useState(null);
     const [isPlaying, setIsPlaying] = useState(true);
@@ -21,7 +21,7 @@ export const MusicPlayer = () => {
         if (currentSong !== null) {
             async function fetchData() {
                 try {
-                    const response = await axios.get(`http://127.0.0.1:8000/api/songs/audio/${currentSong.id}`);
+                    const response = await axios.get(API_BASE_URL+`/songs/audio/${currentSong.id}`);
                     setAudio(response.data);
                 } catch (error) {
                     console.log(error);
@@ -31,7 +31,14 @@ export const MusicPlayer = () => {
             fetchData();
         }
     }, [currentSong]);
-    
+    // auto next song
+    useEffect(() => {
+        if (audioElement) {
+            audioElement.addEventListener('ended', () => {
+                handleNextSong();
+            });
+        }
+    }, [audioElement]);
     const handleSongPlayback = () => {
         if (audioElement.paused) {
             audioElement.play();
@@ -61,22 +68,22 @@ export const MusicPlayer = () => {
     }, [audioElement]);
     const handlePrevSong = () => {
         if (currentIndex > 0) {
-          setCurrentIndex(currentIndex - 1);
-          setCurrentSong(currentSongs[currentIndex - 1]);
+            setCurrentIndex(currentIndex - 1);
+            setCurrentSong(currentSongs[currentIndex - 1]);
         } else {
-          setCurrentIndex(currentSongs.length - 1);
-          setCurrentSong(currentSongs[currentSongs.length - 1]);
+            setCurrentIndex(currentSongs.length - 1);
+            setCurrentSong(currentSongs[currentSongs.length - 1]);
         }
-      };
-      const handleNextSong = () => {
+    };
+    const handleNextSong = () => {
         if (currentIndex < currentSongs.length - 1) {
-          setCurrentIndex(currentIndex + 1);
-          setCurrentSong(currentSongs[currentIndex + 1]);
+            setCurrentIndex(currentIndex + 1);
+            setCurrentSong(currentSongs[currentIndex + 1]);
         } else {
-          setCurrentIndex(0);
-          setCurrentSong(currentSongs[0]);
+            setCurrentIndex(0);
+            setCurrentSong(currentSongs[0]);
         }
-      };
+    };
     const startTimeElement = document.getElementById('start-time');
     const endTimeElement = document.getElementById('time-end');
 
@@ -150,11 +157,11 @@ export const MusicPlayer = () => {
     const handleRandomPlay = () => {
         // Shuffle current songs array
         const shuffledSongs = [...currentSongs].sort(() => Math.random() - 0.5);
-  setCurrentIndex(0);
-  setCurrentSongs(shuffledSongs);
-    setCurrentSong(shuffledSongs[0]);
-      };
-      
+        setCurrentIndex(0);
+        setCurrentSongs(shuffledSongs);
+        setCurrentSong(shuffledSongs[0]);
+    };
+
     return currentSong ? (
 
         <div className="music-player-wrapper">
@@ -228,7 +235,5 @@ export const MusicPlayer = () => {
                 </div>
             </div>
         </div>
-    ) : (
-        <div></div>
-    );
+    ) : null;
 };

@@ -5,7 +5,7 @@ import OwlCarousel from 'react-owl-carousel';
 import axios from "axios";
 import './topic.css'
 import { Link } from 'react-router-dom';
-
+import API_BASE_URL from '../../config';
 const options = {
     items: 5,
     margin: 30,
@@ -20,7 +20,7 @@ export const Topic = ({ topic }) => {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await axios.get(`http://127.0.0.1:8000/api/topics/playlist/${topic.id}`);
+                const response = await axios.get(API_BASE_URL+`/topics/playlist/${topic.id}`);
                 setPlaylists(response.data);
             } catch (error) {
                 console.log(error);

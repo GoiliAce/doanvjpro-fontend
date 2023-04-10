@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import './Playlist.css'
+import { Navbar } from '../navbar/Navbar';
 import { ListSong } from './ListSong';
 import { useParams } from 'react-router-dom';
 import { useContext } from 'react';
 import { HandleSongClickContext } from "../../App";
-
+import API_BASE_URL from '../../config';
 export const Playlist = () => {
     const { id } = useParams();
     const handleSongClick = useContext(HandleSongClickContext);
@@ -13,12 +14,14 @@ export const Playlist = () => {
     const [playlist, setPlaylist] = useState([]);
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/api/playlists/' + id)
+        axios.get(API_BASE_URL+'/playlists/' + id)
             .then(response => setPlaylist(response.data))
             .catch(error => console.log(error));
     }, []);
     return (
-        <div className="col-md-10 no-padding" id="content">
+        
+        <div className="" id="content">
+        {/* <Navbar /> */}
             <div className="wrapper-top">
                 <div className="info-play-list">
                     <div className="image-play-list">

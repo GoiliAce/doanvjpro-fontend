@@ -3,14 +3,14 @@ import axios from "axios";
 import './ListSong.css'
 import { useParams } from 'react-router-dom';
 import { SongItem } from './SongItem';
-
+import API_BASE_URL from '../../config';
 export const ListSong = ({playlist, handleSongClick}) => {
     const [songs, setSongs] = useState([]);
 
     useEffect(() => {
         const fetchSongs = async () => {
             try {
-                const res = await axios.get(`http://localhost:8000/api/playlists/songs/${playlist}`);
+                const res = await axios.get(API_BASE_URL+`/playlists/songs/${playlist}`);
                 setSongs(res.data);
             } catch (error) {
                 console.log(error);

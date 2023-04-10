@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Search } from '../search/search';
-import { Nav } from '../nav/Nav';
+import { Navbar  } from '../navbar/Navbar';
 import { Topic } from '../topic/Topic'
 import axios from "axios";
-
+import API_BASE_URL from '../../config';
 export const Home = () => {
   const [topics, setTopics] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/topics');
+        const response = await axios.get(API_BASE_URL+'/topics');
         setTopics(response.data);
       } catch (error) {
         console.log(error);
@@ -20,9 +19,9 @@ export const Home = () => {
   }, []);
 
   return (
-    <div className="col-md-10 no-padding" id="content">
+    <div className="" id="content">
       <div className="content_home">
-        <Search />
+        <Navbar />
         {/* start recomment song */}
         <div className="list-song p-4">
           {topics.map(topic => (
