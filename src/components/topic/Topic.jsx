@@ -3,7 +3,7 @@ import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
 import OwlCarousel from 'react-owl-carousel';
 import axios from "axios";
-import './topic.css'
+import './Topic.css'
 import { Link } from 'react-router-dom';
 import API_BASE_URL from '../../config';
 const options = {

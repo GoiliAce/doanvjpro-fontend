@@ -21,7 +21,7 @@ export const MusicPlayer = () => {
         if (currentSong !== null) {
             async function fetchData() {
                 try {
-                    const response = await axios.get(API_BASE_URL+`/songs/audio/${currentSong.id}`);
+                    const response = await axios.get(API_BASE_URL+`/audio/${currentSong.id}`);
                     setAudio(response.data);
                 } catch (error) {
                     console.log(error);

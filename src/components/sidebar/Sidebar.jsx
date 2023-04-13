@@ -1,11 +1,13 @@
-import React, { useEffect, useState  } from 'react';
+import React, { useEffect, useState } from 'react';
 import 'boxicons';
 import './sidebar.css';
+import { Link } from 'react-router-dom';
+
 export const Sidebar = () => {
     const [isSidebarHidden, setIsSidebarHidden] = useState(false);
     const toggleSidebar = () => {
         setIsSidebarHidden(!isSidebarHidden);
-        };
+    };
     useEffect(() => {
         const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
         allSideMenu.forEach(item => {
@@ -17,26 +19,29 @@ export const Sidebar = () => {
                 li.classList.add('active');
             });
         });
-        
+
     }, []);
     return (
-        <section id="sidebar" className={isSidebarHidden? 'hide':''}>
+        <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
             <a href="#" className="brand">
                 <box-icon onClick={toggleSidebar} name='menu' color='#fff'></box-icon>
                 <span className="text">zeomp2</span>
             </a>
             <ul className="side-menu top">
                 <li className="active">
-                    <a href="#">
+                    <Link to="/">
                         <box-icon name='home' color='#565656' ></box-icon>
                         <span className="text">Home</span>
-                    </a>
+                    </Link>
+
                 </li>
                 <li>
-                    <a href="#">
-                    <box-icon name='playlist' type='solid' color='#565656' ></box-icon>
+                    <Link to="/playlists">
+                        <box-icon name='playlist' type='solid' color='#565656' ></box-icon>
                         <span className="text">Playlist</span>
-                    </a>
+                    </Link>
+
+
                 </li>
                 <li>
                     <a href="#">
