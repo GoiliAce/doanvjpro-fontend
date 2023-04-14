@@ -4,24 +4,47 @@ import axios from "axios";
 import "./MusicPlayer.css";
 import { CurrentSongContext } from "../../App";
 import API_BASE_URL from '../../config';
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying, setSongPlaying } from '../../redux/actions';
 export const MusicPlayer = () => {
-    const [currentIndex, currentSongs, setCurrentIndex, setCurrentSongs] = useContext(CurrentSongContext);
-    const [currentSong, setCurrentSong] = useState(currentSongs[currentIndex]);
+    const dispatch = useDispatch();
     const [audio, setAudio] = useState(null);
-    const [isPlaying, setIsPlaying] = useState(true);
     const audioElement = document.querySelector('audio');
     const [progress, setProgress] = useState(0);
     const [volume, setVolume] = useState(100);
     const [prevVolume, setPrevVolume] = useState(100);
+    const playlist = useSelector((state) => state.playlist);
+    const isPlaying = useSelector((state) => state.isPlaying);
+    const currentSongIndex = useSelector((state) => state.currentSongIndex);
+    const [currentSong, setCurrentSong] = useState(playlist[currentSongIndex]);
 
     useEffect(() => {
-        setCurrentSong(currentSongs[currentIndex]);
-    }, [currentIndex, currentSongs]);
+        setCurrentSong(playlist[currentSongIndex]);
+        // tăng lượt nghe khi bài hát được chọn
+        if (currentSong) {
+            const listenerCount = currentSong.listen + 1;
+            currentSong.listen = listenerCount;
+            console.log(currentSong.listen);
+            axios({
+                method:'put',
+                url: API_BASE_URL+'song/'+currentSong.id,
+                data: currentSong,
+                withCredentials: true
+            })
+            .catch(error => {
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            });
+        }
+    }, [currentSongIndex]);
     useEffect(() => {
         if (currentSong !== null) {
             async function fetchData() {
                 try {
-                    const response = await axios.get(API_BASE_URL+`/audio/${currentSong.id}`);
+                    const response = await axios.get(API_BASE_URL + `audio/${currentSong.id}`);
                     setAudio(response.data);
                 } catch (error) {
                     console.log(error);
@@ -31,6 +54,27 @@ export const MusicPlayer = () => {
             fetchData();
         }
     }, [currentSong]);
+    
+    useEffect(() => {
+        // update listener count when song is changed or played 
+        if (currentSong) {
+            const listenerCount = currentSong.listen + 1;
+            currentSong.listen = listenerCount;
+            console.log(currentSong.listen);
+            axios({
+                method:'put', 
+                url: API_BASE_URL + 'song/'+currentSong.id,
+                data: currentSong,
+                xsrfCookieName: 'csrftoken',
+                xsrfHeaderName: 'X-CSRFTOKEN',
+                withCredentials: true
+            })
+        }
+        
+    }, [currentSong]);
+
+
+
     // auto next song
     useEffect(() => {
         if (audioElement) {
@@ -42,10 +86,10 @@ export const MusicPlayer = () => {
     const handleSongPlayback = () => {
         if (audioElement.paused) {
             audioElement.play();
-            setIsPlaying(false);
+            dispatch(setIsPlaying(false));
         } else {
             audioElement.pause();
-            setIsPlaying(true);
+            dispatch(setIsPlaying(true));
         }
     };
     useEffect(() => {
@@ -67,21 +111,21 @@ export const MusicPlayer = () => {
         };
     }, [audioElement]);
     const handlePrevSong = () => {
-        if (currentIndex > 0) {
-            setCurrentIndex(currentIndex - 1);
-            setCurrentSong(currentSongs[currentIndex - 1]);
+        if (currentSongIndex > 0) {
+            dispatch(setCurrentSongIndex((currentSongIndex - 1)));
+            // setCurrentSong(playlist[currentSongIndex - 1]);
         } else {
-            setCurrentIndex(currentSongs.length - 1);
-            setCurrentSong(currentSongs[currentSongs.length - 1]);
+            dispatch(setCurrentSongIndex(playlist.length - 1));
+            // setCurrentSong(playlist[playlist.length - 1]);
         }
     };
     const handleNextSong = () => {
-        if (currentIndex < currentSongs.length - 1) {
-            setCurrentIndex(currentIndex + 1);
-            setCurrentSong(currentSongs[currentIndex + 1]);
+        if (currentSongIndex < playlist.length - 1) {
+            dispatch(setCurrentSongIndex((currentSongIndex + 1)));
+            // setCurrentSong(playlist[currentSongIndex + 1]);
         } else {
-            setCurrentIndex(0);
-            setCurrentSong(currentSongs[0]);
+            dispatch(setCurrentSongIndex(0));
+            // setCurrentSong(playlist[0]);
         }
     };
     const startTimeElement = document.getElementById('start-time');
@@ -103,7 +147,7 @@ export const MusicPlayer = () => {
     useEffect(() => {
         if (audioElement) {
             audioElement.play();
-            setIsPlaying(false);
+            dispatch(setIsPlaying(false));
         }
     }, [audio]);
 
@@ -155,11 +199,11 @@ export const MusicPlayer = () => {
         });
     }
     const handleRandomPlay = () => {
-        // Shuffle current songs array
-        const shuffledSongs = [...currentSongs].sort(() => Math.random() - 0.5);
-        setCurrentIndex(0);
-        setCurrentSongs(shuffledSongs);
-        setCurrentSong(shuffledSongs[0]);
+        // // Shuffle current songs array
+        // const shuffledSongs = [...currentSongs].sort(() => Math.random() - 0.5);
+        // setCurrentIndex(0);
+        // setCurrentSongs(shuffledSongs);
+        // setCurrentSong(shuffledSongs[0]);
     };
 
     return currentSong ? (
@@ -176,7 +220,15 @@ export const MusicPlayer = () => {
                                 {currentSong.title}
                             </p>
                             <p className="artist" id="artist-name">
-                                {currentSong.artist}
+                                {currentSong.artists.map((artist, index) => {
+                                    return (
+                                        <span key={artist.alias}>
+                                            <Link className='link' to={`/artist/${artist.id}`}>{artist.name}</Link>
+                                            {index !== currentSong.artists.length - 1 && ', '}
+                                        </span>
+                                    )
+                                }
+                                )}
                             </p>
                         </div>
                     </div>

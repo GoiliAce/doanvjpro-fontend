@@ -50,7 +50,7 @@ ol, ul{
 	--lato: 'Lato', sans-serif;
 
 	--light: #101010;
-	--blue: #3C91E6;
+	--blue: #03C04A;
 	--light-blue: #CFE8FF;
 	--grey: #040404;
 	--dark-grey: #AAAAAA;
@@ -87,7 +87,9 @@ ol, ul{
 	width: calc(100% - 200px);
 	left: 200px;
 	transition: .3s ease;
+  min-height: 100vh;
 }
+
 #sidebar.hide ~ #content {
 	width: calc(100% - 60px);
 	left: 60px;

@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar } from '../navbar/Navbar';
-import { Topic } from '../topic/Topic'
 import axios from "axios";
 import API_BASE_URL from '../../config';
 import Loading from '../../assets/gif/Loading-cat.gif';
-import './Home.css';
+import './home.css';
 export const Home = () => {
     const [topics, setTopics] = useState([]);
 
@@ -21,23 +20,6 @@ export const Home = () => {
     }, []);
 
     return (
-        <div className="" id="content">
-            <div className="content_home">
-                <Navbar />
-                <div className="list-song p-4">
-                    {topics.length === 0 ? (
-                        <div className="loading text-center">
-                            <img src={Loading} alt="loading" />
-                            <h1 className='display-4'>Trang đang load bạn vui lòng đợi xíu nha</h1>
-                        </div>
-                    ) : (
-                        topics.map(topic => (
-                            <Topic topic={topic} key={topic.id} />
-                        ))
-                    )
-                    }
-                </div>
-            </div> 
-        </div>
+        <h1>hihi</h1>
     )
 }

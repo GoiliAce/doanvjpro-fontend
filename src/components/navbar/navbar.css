@@ -7,9 +7,15 @@ nav {
 	grid-gap: 24px;
 	font-family: var(--lato);
 	position: sticky;
-	top: 0;
+	top: 0px;
 	left: 0;
+	width: 100%;
 	z-index: 1000;
+	transition: top 0.2s ease-in-out;
+}
+nav.hide {
+	display: none;
+	transition: top 0.3s ease-in-out;
 }
 nav::before {
 	content: '';
@@ -119,3 +125,26 @@ nav .switch-mode::before {
 nav #switch-mode:checked + .switch-mode::before {
 	left: calc(100% - (25px - 4px) - 2px);
 }
+nav .nav-content{
+	display: flex;
+	align-items: center;
+	width: 100%;
+	color: #ccc;
+	gap: 24px;
+}
+nav .nav-content h1{
+	font-size: 24px;
+	font-weight: 500;
+	font-family: var(--lato);
+}
+.spin{
+	animation-name: spin;
+	animation-duration: 2s; /* Thời gian hoàn thành 1 vòng xoay */
+	animation-iteration-count: infinite; /* Vòng lặp vô hạn */
+	animation-timing-function: linear;
+}
+@keyframes spin {
+	from { transform: rotate(0deg); }
+	to { transform: rotate(360deg); }
+  }
+  

@@ -4,7 +4,7 @@ import './sidebar.css';
 import { Link } from 'react-router-dom';
 
 export const Sidebar = () => {
-    const [isSidebarHidden, setIsSidebarHidden] = useState(false);
+    const [isSidebarHidden, setIsSidebarHidden] = useState(true);
     const toggleSidebar = () => {
         setIsSidebarHidden(!isSidebarHidden);
     };
@@ -23,10 +23,10 @@ export const Sidebar = () => {
     }, []);
     return (
         <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
-            <a href="#" className="brand">
+            <div href="#" className="brand">
                 <box-icon onClick={toggleSidebar} name='menu' color='#fff'></box-icon>
                 <span className="text">zeomp2</span>
-            </a>
+            </div>
             <ul className="side-menu top">
                 <li className="active">
                     <Link to="/">
