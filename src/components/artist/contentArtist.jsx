@@ -20,12 +20,12 @@ export const ContentArtist = ({songs, artist}) => {
                     return (
                         <div className={`col-${col}`}>
                             <div className="song-item-artist">
-                                <div className="song-item-artist__id" onClick={() => handleSongClick(index,songs)}>{index + 1}</div>
                                 <div className="song-item-artist__img">
                                     <img src={song.thumbnail} alt="" width={48}/>
+                                    <div className="song-item-play-btn" onClick={() => handleSongClick(index,songs)}><box-icon name='play' color='#fff' ></box-icon></div>
                                 </div>
-                                <div className="song-item-artist__title">{song.title}</div>
-                                <div className="song-item-artist__author">{
+                                <div className="song-item-artist__title struncate">{song.title}</div>
+                                <div className="song-item-artist__author struncate">{
                                     song.artists.map((artist, index) => {
                                         return (
                                             <Link to={`/artist/${artist.alias}`} className='link'>
@@ -41,6 +41,8 @@ export const ContentArtist = ({songs, artist}) => {
                     )
                 })
             }
+            <h2 className='text-white'>Album</h2>
+
         </div>
     </div>
     )

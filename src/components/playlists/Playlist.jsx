@@ -7,7 +7,6 @@ import { Link } from 'react-router-dom';
 import { Navbar } from '../navbar/Navbar';
 import { useDispatch } from 'react-redux';
 import { setCurrentIdPlaylist, setCurrentPlaylist, setCurrentSongIndex } from '../../redux/actions';
-import { HandleSongClickContext } from "../../App";
 import { useSelector } from 'react-redux';
 import API_BASE_URL from '../../config';
 export const Playlist = () => {

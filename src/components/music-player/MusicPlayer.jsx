@@ -20,26 +20,7 @@ export const MusicPlayer = () => {
     const currentSongIndex = useSelector((state) => state.currentSongIndex);
     const [currentSong, setCurrentSong] = useState(playlist[currentSongIndex]);
 
-    useEffect(() => {
-        setCurrentSong(playlist[currentSongIndex]);
-        // tăng lượt nghe khi bài hát được chọn
-        if (currentSong) {
-            const listenerCount = currentSong.listen + 1;
-            currentSong.listen = listenerCount;
-            console.log(currentSong.listen);
-            axios({
-                method:'put',
-                url: API_BASE_URL+'song/'+currentSong.id,
-                data: currentSong,
-                withCredentials: true
-            })
-            .catch(error => {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            });
-        }
-    }, [currentSongIndex]);
+
     useEffect(() => {
         if (currentSong !== null) {
             async function fetchData() {
@@ -223,7 +204,7 @@ export const MusicPlayer = () => {
                                 {currentSong.artists.map((artist, index) => {
                                     return (
                                         <span key={artist.alias}>
-                                            <Link className='link' to={`/artist/${artist.id}`}>{artist.name}</Link>
+                                            <Link className='link' to={`/artist/${artist.alias}`}>{artist.name}</Link>
                                             {index !== currentSong.artists.length - 1 && ', '}
                                         </span>
                                     )

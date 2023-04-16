@@ -6,11 +6,17 @@ import { Link } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setIsPlaying } from '../../redux/actions';
+import { setShowLoginForm, setAccountLogin } from '../../redux/actions';
+import API_BASE_URL from '../../config';
+
+import { setIsPlaying, accessToken } from '../../redux/actions';
+import axios from 'axios';
 export const Navbar = (props) => {
     const dispatch = useDispatch();
     const [showNav, setShowNav] = useState(false);
     const isPlaying = useSelector((state) => state.isPlaying);
+    const accessToken = useSelector((state) => state.accessToken);
+
     useEffect(() => {
         function handleScroll() {
             if (window.scrollY > 512) {
@@ -26,6 +32,7 @@ export const Navbar = (props) => {
             window.removeEventListener('scroll', handleScroll);
         };
     }, []);
+    
     const [searchTerm, setSearchTerm] = useState('');
 
     const handleSearch = (event) => {

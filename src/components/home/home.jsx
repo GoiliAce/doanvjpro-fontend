@@ -10,7 +10,7 @@ export const Home = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get(API_BASE_URL + '/playlists');
+                const response = await axios.get(API_BASE_URL + 'playlists');
                 setTopics(response.data);
             } catch (error) {
                 console.log(error);

@@ -5,11 +5,12 @@
 }
 .song-item-artist {
     display: grid;
-    grid-template-columns: [index] 40px [first] 0.5fr [var1] 2fr [var2] 2fr [last] minmax(120px, 1fr);
+    grid-template-columns: [first] 0.5fr [var1] 2fr [var2] 2.2fr [last] 60px;
     align-items: center;
     padding: 16px;
     font-size: 24px;
     color: #fff;
+    gap: 16px;
     border-bottom: 1px solid #2e2e2e;
 }
 
@@ -19,24 +20,27 @@
     font-size: 18px;
 }
 
-/* .song-item-artist:first-child div{
-    font-family: 'Lato', sans-serif;
-    font-weight: 100;
-    opacity: 0.6;
-} */
 
 .song-item-artist:hover {
     border-radius: 8px;
-    background-color: #3a3a3a;
+    background-color: #1d1d1d;
 }
-.song-item-artist:hover .song-item-artist__id:not(.spin){
-    content: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAI5JREFUSEvtlMENwCAIAGEMdFYTnacdyAlYg8am/bUFTYh96Ffk4DAgOB90zg8LoBqeq4iZNwBIIYSqlvoS8NkBM0t7h4iZiMoIxAS4EldETES094B6AHfeBjBrGwGcIKu2YYBV238BIlJijFkb+EgHbkP2+6ZWHU+6NEW+q0IboOV+7ja1VKjFrA40Q3AAwaFIGSgs1cQAAAAASUVORK5CYII=');
-    cursor: pointer;
-}  
-.song-item-artist__id::before {
-    content: attr(data-label);
+
+.song-item-artist:hover .song-item-artist__img img{
+    opacity: 0.3;
 }
-.song-item-artist:hover{
-    border-radius: 8px;
-    background-color: #3a3a3a;
+.song-item-artist__img{
+    position: relative;
+    width: 48px;
+}
+.song-item-play-btn{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.song-item-artist:hover .song-item-play-btn{
+    display: block;
+    cursor: pointer;;
 }

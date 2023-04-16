@@ -1,0 +1,113 @@
+.user-setting {
+    position: fixed;
+    width: calc(100% - 400px);
+    height: calc(100% - 100px);
+    top: 50%;
+    left: 50%;
+    background: #313338;
+    border: 2px solid rgba(255, 255, 255, .5);
+    border-radius: 20px;
+    backdrop-filter: blur(40px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, .5);
+    overflow: hidden;
+    transform: translate(-50%, -50%) scale(0);
+    transition: transform .5s ease, height .2s ease;
+    z-index: 1;
+    padding: 24px;
+    color: #fff;
+}
+.user-setting.active{
+    transform: translate(-50%,-50%) scale(1);
+}
+.user-setting__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+}
+
+.user-setting__content {
+    display: flex;
+    padding: 16px;
+    height: 100%;
+
+}
+
+.user-setting__content__left {
+    width: 20%;
+    height: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.user-setting__content__right {
+    width: 80%;
+    height: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.user-setting__content__left__item h4 {
+    margin: 0;
+}
+
+.user-setting__content__left__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+.user-setting__content__left__item:hover {
+    background: #545456;
+}
+
+.user-setting__content__left__item.active {
+    background: #2B2D31;
+}
+.user-setting__content__left__title{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.user-setting__content__left__item__content {
+    font-size: 16px;
+    font-weight: 400px;
+}
+.user-setting__content__right {
+    /* ... */
+    overflow: auto;
+    overflow-y: scroll;
+    /* ẩn thanh cuộn ngang và dọc */
+    scrollbar-width: none;
+    /* ẩn thanh cuộn trên Firefox */
+    -ms-overflow-style: none;
+}
+.user-setting__content__right::-webkit-scrollbar {
+    /* ẩn thanh cuộn trên Chrome và Safari */
+    display: none;
+}
+
+/* exit */
+.user-setting__exit{
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    width: 60px;
+    height: 60px;
+    background: #1E1F22;
+    font-size: 2em;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    transition: all .2s ease;
+    padding: 20px;
+}

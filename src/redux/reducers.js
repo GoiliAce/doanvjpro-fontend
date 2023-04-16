@@ -1,10 +1,17 @@
-import {SET_PLAYLIST, SET_CURRENT_SONG_INDEX, SET_IS_PLAYING, SET_SONG_PLAYING, SET_ID_PLAYLIST} from './actions';
+import {SET_PLAYLIST, SET_CURRENT_SONG_INDEX, SET_IS_PLAYING, SET_SONG_PLAYING, SET_ID_PLAYLIST, SET_ACCOUNT_LOGIN, SET_SHOW_LOGIN_FORM, SET_SHOW_SETTING_FORM} from './actions';
 const initialState = {
     playlist: [],
     currentSongIndex: -1,
     idPlaylist: 'a',
     isPlaying: true,
-    songPlaying: {}
+    songPlaying: {},
+    accountLogin: {
+        username: '',
+        password: '',
+        isLogin: false
+    },
+    showLoginForm: false,
+    accessToken: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -33,6 +40,21 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 idPlaylist: action.payload
+            };
+        case SET_ACCOUNT_LOGIN:
+            return {
+                ...state,
+                accountLogin: action.payload
+            };
+        case SET_SHOW_LOGIN_FORM:
+            return {
+                ...state,
+                showLoginForm: action.payload
+            };
+        case SET_SHOW_SETTING_FORM:
+            return {
+                ...state,
+                showSettingForm: action.payload
             };
 
         default:
