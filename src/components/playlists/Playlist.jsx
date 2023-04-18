@@ -22,8 +22,6 @@ export const Playlist = () => {
             .then(response => {
                 setPlaylist(response.data);
                 setSongs(response.data.songs);
-                
-                
             })
 
             .catch(error => console.log(error));
@@ -34,6 +32,9 @@ export const Playlist = () => {
         dispatch(setCurrentIdPlaylist(playlist.id));
         dispatch(setCurrentSongIndex(index));
         console.log(currentIdPlaylist);
+        console.log('====================================');
+        console.log(songs);
+        console.log('====================================');
     };
     return (
 

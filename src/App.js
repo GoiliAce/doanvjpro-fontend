@@ -21,10 +21,11 @@ const App = () => {
           <Sidebar />
           <LoginForm/>
           <Routes>
-            <Route path="/" element={<UserSetting />} />
+            <Route path="/" element={<Home />} />
             <Route path="playlists" element={<Playlists />} />
             <Route path="playlist/:id" element={<Playlist />} />
             <Route path="artist/:alias" element={<Artist />} />
+            <Route path="setting" element={<UserSetting />} />
           </Routes>
           <MusicPlayer />
         </BrowserRouter>

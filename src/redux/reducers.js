@@ -8,6 +8,7 @@ const initialState = {
     accountLogin: {
         username: '',
         password: '',
+        thumbnail: '',
         isLogin: false
     },
     showLoginForm: false,

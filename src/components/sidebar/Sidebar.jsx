@@ -7,8 +7,8 @@ import { useDispatch } from 'react-redux';
 import { setAccountLogin, setShowLoginForm, setShowSettingForm } from '../../redux/actions';
 import API_BASE_URL from '../../config';
 import axios from 'axios';
-import {UserSetting} from '../userSetting/userSetting';
-
+import { UserSetting } from '../userSetting/userSetting';
+import defaultAvatar from '../../assets/images/avt.png';
 export const Sidebar = () => {
     const dispatch = useDispatch();
     const [isSidebarHidden, setIsSidebarHidden] = useState(true);
@@ -68,12 +68,17 @@ export const Sidebar = () => {
                 li.classList.add('active');
             });
         });
-
     }, []);
+    useEffect(() => {
+        const imgElement = document.getElementById('avatar-sidebar');
+        if (imgElement && accountLogin.thumbnail) {
+            imgElement.src = accountLogin.thumbnail;
+        }
+    }, [accountLogin.thumbnail], dispatch);
     const active = useSelector((state) => state.showSettingForm);
-  const handleOpenUserSetting = () => {
-    dispatch(setShowSettingForm(true));
-  }
+    const handleOpenUserSetting = () => {
+        dispatch(setShowSettingForm(true));
+    }
 
     return (
         <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
@@ -122,7 +127,7 @@ export const Sidebar = () => {
                         <li>
                             <div className=' sub-li user '>
                                 <div className="user__img">
-                                    <img src='https://source.unsplash.com/random' width='32' />
+                                    <img id='avatar-sidebar' src={accountLogin.thumbnail ? accountLogin.thumbnail : defaultAvatar} width='32' />
                                 </div>
                                 <span className="text">{accountLogin.username}</span>
                             </div>
@@ -130,10 +135,10 @@ export const Sidebar = () => {
                     ) : ''
                 }
                 <li>
-                    <div className='sub-li' onClick={handleOpenUserSetting}>
+                    <Link to="setting">
                         <box-icon name='cog' color='#565656' ></box-icon>
                         <span className="text">Settings</span>
-                    </div>
+                    </Link>
                 </li>
                 <li>
                     <div className="logout sub-li" onClick={handleSetShowLoginForm}>
