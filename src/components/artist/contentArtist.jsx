@@ -13,7 +13,7 @@ export const ContentArtist = ({songs, artist}) => {
     };
     return (
         <div className="wrapper-content">
-        <div className="row list-songs">
+        <div className="row list-songs no-margin">
             <h2 className='text-white'>Popular</h2>
             {
                 songs && songs.map((song, index) => {

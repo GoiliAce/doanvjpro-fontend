@@ -24,18 +24,27 @@ a{
 }
 
 .topic-content .item{
-    background-color: #151515;
-    padding: 20px;
+    background-color: #040404;
     border-radius: 8px;
-    border: #535353 1px solid;
+    border: #606060 1px solid;
 }
 .topic-content .item:hover{
-    background-color: #202020;
+    background-color: #181818;
 }
 .card-song-img{
     margin-bottom: 15px;
+    border-radius: 8px 8px 0 0;
+    overflow: hidden;
+}
+.item:hover .card-song-img img{
+    opacity: 0.7;
+}
+.card-song-info{
+    padding: 0 10px 10px 10px;
+
 }
 .card-song-name{
+    text-align: center;
     color: #fff;
     font-size: 1.2rem;
 }

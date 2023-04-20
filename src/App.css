@@ -88,6 +88,8 @@ ol, ul{
 	left: 200px;
 	transition: .3s ease;
   min-height: 100vh;
+
+  margin-bottom: 96px;
 }
 
 #sidebar.hide ~ #content {

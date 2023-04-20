@@ -8,15 +8,16 @@ import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
 import { setShowLoginForm, setAccountLogin } from '../../redux/actions';
 import API_BASE_URL from '../../config';
+import { useNavigate  } from 'react-router-dom';
 
 import { setIsPlaying, accessToken } from '../../redux/actions';
 import axios from 'axios';
 export const Navbar = (props) => {
     const dispatch = useDispatch();
+    const navigate = useNavigate ();
     const [showNav, setShowNav] = useState(false);
     const isPlaying = useSelector((state) => state.isPlaying);
     const accessToken = useSelector((state) => state.accessToken);
-
     useEffect(() => {
         function handleScroll() {
             if (window.scrollY > 512) {
@@ -41,7 +42,7 @@ export const Navbar = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        // handle search
+        navigate(`/search?search=${searchTerm}`);
     };
 
 
@@ -65,13 +66,7 @@ export const Navbar = (props) => {
                     </button>
                 </div>
             </form>)}
-            <a href="#" className="notification">
-                <box-icon name='bell' ></box-icon>
-                <span className="num">8</span>
-            </a>
-            <a href="#" className="profile">
-                <img src="https://source.unsplash.com/random" alt="user profile" />
-            </a>
+
         </nav>
     );
 };

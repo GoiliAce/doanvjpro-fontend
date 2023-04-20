@@ -14,6 +14,7 @@ import e404 from "./assets/images/404.png";
 import { Error } from "./components/subcomponents/subcomponents";
 import { Albums } from "./components/albums/albums";
 import { Album } from "./components/albums/album";
+import { SearchPage } from "./components/search/search";
 
 const App = () => {
   return (
@@ -29,7 +30,7 @@ const App = () => {
             <Route path="setting" element={<UserSetting />} />
             <Route path="albums" element={<Albums/>} />
             <Route path="album/:id" element={<Album />} />
-
+            <Route path='search/' element={<SearchPage />} />
             <Route path="*" element={<Error id='content' img={e404} content="404 page not found" />} />
           </Routes>
           <MusicPlayer />

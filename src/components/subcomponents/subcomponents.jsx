@@ -27,6 +27,9 @@ export const Error = (props) => {
         <NotLoginWrapper>
         <ImageError src={props.img} />
         <Content>{props.content}</Content>
+        {
+            props.subcontent &&<Content>{props.subcontent}</Content>
+        }
     </NotLoginWrapper>
     )
 }
