@@ -94,6 +94,8 @@ ol, ul{
 	width: calc(100% - 60px);
 	left: 60px;
 }
+
+
 .loading{
   position: fixed;
   top: 0;

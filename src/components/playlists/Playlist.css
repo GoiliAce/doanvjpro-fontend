@@ -26,6 +26,9 @@
 .list-songs {
     padding: 0 64px;
 }
+.wrapper-songs{
+    margin-bottom: 96px;
+}
 .song-item{
     display: grid;
     grid-template-columns: [index] 60px [first] 6fr [var1] 3fr [last] minmax(120px,1fr);

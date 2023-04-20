@@ -10,9 +10,10 @@ import { Home } from './components/home/home';
 import { Artist } from './components/artist/artist';
 import { LoginForm } from "./components/login/login";
 import { UserSetting } from "./components/userSetting/userSetting";
-export const HandleSongClickContext = createContext(null);
-
-export const CurrentSongContext = createContext(null);
+import e404 from "./assets/images/404.png";
+import { Error } from "./components/subcomponents/subcomponents";
+import { Albums } from "./components/albums/albums";
+import { Album } from "./components/albums/album";
 
 const App = () => {
   return (
@@ -23,9 +24,13 @@ const App = () => {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="playlists" element={<Playlists />} />
-            <Route path="playlist/:id" element={<Playlist />} />
+            <Route path="playlist/:id" element={<Playlist  />} />
             <Route path="artist/:alias" element={<Artist />} />
             <Route path="setting" element={<UserSetting />} />
+            <Route path="albums" element={<Albums/>} />
+            <Route path="album/:id" element={<Album />} />
+
+            <Route path="*" element={<Error id='content' img={e404} content="404 page not found" />} />
           </Routes>
           <MusicPlayer />
         </BrowserRouter>

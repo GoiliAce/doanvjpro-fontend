@@ -48,7 +48,7 @@ export const Sidebar = () => {
                     isLogin: false,
                     username: '',
                     email: '',
-                    avatar: '',
+                    thumbnail: '',
                     id: ''
                 }
             ))
@@ -103,10 +103,10 @@ export const Sidebar = () => {
 
                 </li>
                 <li>
-                    <a href="#">
+                    <Link to="/albums">
                         <box-icon name='album' color='#565656' ></box-icon>
                         <span className="text">Album</span>
-                    </a>
+                    </Link>
                 </li>
                 <li>
                     <a href="#">

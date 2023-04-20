@@ -12,8 +12,12 @@
 .topic-title{
     color: #fff;
 }
+.topic{
+    position: relative;
+}
 a{
     text-decoration: none;
+    color: #ffffff;
 }
 .topic-content{
     padding: 20px 0px;
@@ -23,6 +27,7 @@ a{
     background-color: #151515;
     padding: 20px;
     border-radius: 8px;
+    border: #535353 1px solid;
 }
 .topic-content .item:hover{
     background-color: #202020;
@@ -44,4 +49,14 @@ a{
     opacity: 1.2;
     color: #fff;
     text-decoration: none;
+}
+.topic-seemore-icon{
+    position: absolute;
+    right: 0;
+    top: 0;
+    color: #fff;
+    font-size: 1.2rem;
+}
+.topic-seemore-icon:hover a{
+    color: var(--blue);
 }

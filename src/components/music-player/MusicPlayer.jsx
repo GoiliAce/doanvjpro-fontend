@@ -206,21 +206,20 @@ export const MusicPlayer = () => {
         // setCurrentSong(shuffledSongs[0]);
     };
 
-    return currentSong ? (
+    return  (
 
-        <div className="music-player-wrapper">
-            <div className="music-player" id="music-player">
+            <div className={`music-player ${currentSong? 'active':''}`} id="music-player">
                 <div className="song-bar">
                     <div className="song-infos">
                         <div className="image-container">
-                            <img id="process-image" src={currentSong.thumbnail} alt="image" />
+                            <img id="process-image" src={currentSong?.thumbnail} alt="image" />
                         </div>
                         <div className="song-description">
                             <p className="title" id="song-name">
-                                {currentSong.title}
+                                {currentSong?.title}
                             </p>
                             <p className="artist" id="artist-name">
-                                {currentSong.artists.map((artist, index) => {
+                                {currentSong?.artists.map((artist, index) => {
                                     return (
                                         <span key={artist.alias}>
                                             <Link className='link' to={`/artist/${artist.alias}`}>{artist.name}</Link>
@@ -285,7 +284,6 @@ export const MusicPlayer = () => {
                     </div>
                     <audio src={audio?.url} preload="metadata" ></audio>
                 </div>
-            </div>
         </div>
-    ) : null;
+    );
 };

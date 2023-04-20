@@ -3,13 +3,12 @@
 * {
     font-family: "circular std book", sans-serif;
 }
-.music-player-wrapper{
+
+.music-player {
     position: fixed;
     z-index: 1000000;
     bottom: 0;
     width: 100%;
-}
-.music-player {
     --primary-color: #ddd;
     --secondary-color: #999;
     --green-color: #2d5;
@@ -18,11 +17,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
     bottom: 0;
     height:6rem;
     padding: var(--padding);
     color: var(--primary-color);
+    left: -2000px;
+    transition: .3s ease;
+}
+.music-player.active{
+    left: 0;
 }
 i{
     color: var(--secondary-color);

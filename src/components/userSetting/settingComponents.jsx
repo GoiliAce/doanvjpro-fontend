@@ -17,50 +17,90 @@ export const AccountInfo = ({ account }) => {
     const [showModalFormUpdateName, setShowModalFormUpdateName] = useState(false);
     const [showModalFormUpdateEmail, setShowModalFormUpdatEmail] = useState(false);
 
-    const handleButtonClick = (buttonType) => {
-        if (buttonType === 'update') {
+    const handleButtonClickOpen = (buttonType) => {
+        if (buttonType === 'update-name') {
             setShowModalFormUpdateName(true);
-        } else if (buttonType === 'create') {
+        } else if (buttonType === 'update-email') {
             setShowModalFormUpdatEmail(true);
         }
     };
-    // const FormUpdate = ({ contentButton }) => {
-    //     console.log(contentButton);
-    //     return showModal && contentButton && (
-    //         <div className="modal-background">
-    //             <div className="modal-container">
-    //                 <button className="close-button" onClick={handleCloseModal}>
-    //                     X
-    //                 </button>
-    //                 <div className="user-setting__form_update">
-    //                     <div className="user-setting__form_update__title">
-    //                         {contentButton.title}
-    //                     </div>
-    //                     <div className="user-setting__form_update__title_description">
-    //                         {contentButton.description}
-    //                     </div>
-    //                     <div className="user-setting__form_update__content">
-    //                         {
-    //                             contentButton.content.map((item, index) => {
-    //                                 return (
-    //                                     <div className="user-setting__form_update__content_item">
-    //                                         <div className="user-setting__form_update__content_item_title">
-    //                                             {contentButton.content.title}
-    //                                         </div>
-    //                                         <div className="user-setting__form_update__content_item_input">
-    //                                             <input type="text" value={contentButton.content.value} onChange={contentButton.content.onChange} />
-    //                                         </div>
-    //                                     </div>
-    //                                 )
-    //                             })
-    //                         }
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
+    const handleButtonClickClose = (buttonType) => {
+        if (buttonType === 'update-name') {
+            setShowModalFormUpdateName(false);
+        } else if (buttonType === 'update-email') {
+            setShowModalFormUpdatEmail(false);
+        }
+    };
 
-    //     )
-    // };
+
+    const FormUpdate = ({ contentButton, buttonType, showForm }) => {
+        const dispatch = useDispatch();
+        const [wrongpass, setWrongpass] = useState(false);
+        const [wrongemail, setWrongemail] = useState(false);
+        const handleModelSubmit = async (event) => {
+            event.preventDefault();
+            setWrongemail(false);
+            setWrongpass(false);
+            const form = event.target;
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData);
+            // Thay đổi dữ liệu ở đây
+
+            const res = await checkPassword(data.password);
+            delete data.password;
+            if (res) {
+
+            const result = await updateAccount({...account, ...data});
+            if (result) {
+              dispatch(setAccountLogin({...account, ...data}));
+            handleButtonClickClose(buttonType)
+
+            } else {
+              setWrongemail(true);
+            }}
+            else {
+                setWrongpass(true);
+            // Đóng form
+          }
+        };
+        return contentButton && showForm && (
+            <div className="modal-background">
+                <div className="modal-container">
+                    <button className="close-button" onClick={() => handleButtonClickClose(buttonType)}>
+                        <box-icon name='x' color="#fff"></box-icon>
+                    </button>
+                    <div className="user-setting__form_update">
+                        <div className="user-setting__form_update__title">
+                            {contentButton.title}
+                        </div>
+                        <div className="user-setting__form_update__title_description">
+                            {contentButton.description}
+                        </div>
+                        <div className="user-setting__form_update__content">
+                            <form onSubmit={handleModelSubmit}>
+                                {
+                                    contentButton.content.map((item, index) => {
+                                        return (
+                                            <div className="form-group">
+                                                <label for={item.name}>{item.title}</label>
+                                                <input type={item.type} className="form-control" id={item.name} placeholder={item.value} name={item.name} />
+                                                {item.name === 'email' && wrongemail && <small class="form-text text-danger">Email của bạn đã được sử dụng</small>}
+                                                {item.name === 'password' && wrongpass && <small class="form-text text-danger">Mật khẩu của bạn không chính xác</small>}
+                                            </div>
+                                        )
+                                    })
+                                }
+
+                                <button type="submit" class="btn_update" >Submit</button>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        )
+    };
     const updateAccount = async (account) => {
         const access_token = localStorage.getItem('access_token');
         try {
@@ -69,12 +109,27 @@ export const AccountInfo = ({ account }) => {
                     'Authorization': `Bearer ${access_token}`
                 }
             });
-            console.log(response);
+            return true;
         } catch (error) {
             console.log(error);
+            return false;
         }
     }
-
+    const checkPassword = async (password) => {
+        const access_token = localStorage.getItem('access_token');
+        const username = account.username;
+        try {
+            const response = await axios.post(`${API_BASE_URL}login`, 
+            {
+                username:username,
+                password: password 
+            });
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
     useEffect(() => {
         updateAccount(account);
     }, [account]);
@@ -153,7 +208,7 @@ export const AccountInfo = ({ account }) => {
         )
     }
 
-    const InfoItem = ({ title, content, contentButton }) => {
+    const InfoItem = ({ title, content, contentButton, showForm }) => {
         return (
             <div className="user-setting__content__right__item__content__item__info__item">
                 <div className='item__content__item__info__item_info'>
@@ -165,9 +220,9 @@ export const AccountInfo = ({ account }) => {
                     </div>
                 </div>
                 <div className='item__content__item__info__item_update'>
-                    <button  className='btn_update'>Update</button>
+                    <button className='btn_update' onClick={() => handleButtonClickOpen(showForm.buttonType)}>Update</button>
                 </div>
-                {/* <FormUpdate contentButton={contentButton} /> */}
+                <FormUpdate contentButton={contentButton} showForm={showForm.content} buttonType={showForm.buttonType} />
             </div>
         )
     }
@@ -175,7 +230,7 @@ export const AccountInfo = ({ account }) => {
         return (
             <div className="user-setting__content__right__item__content__item__info">
                 <InfoItem title="Tên đăng nhập"
-                    content={account.first_name + account.last_name === '' ? "None" : account.first_name + account.last_name}
+                    content={account.first_name + account.last_name === '' ? "None" : account.first_name +" "+ account.last_name}
                     contentButton={
                         {
                             title: "Đổi tên người dùng",
@@ -184,20 +239,29 @@ export const AccountInfo = ({ account }) => {
                                 [
                                     {
                                         title: "First name",
-                                        value: account.first_name
+                                        value: account.first_name,
+                                        type: "text",
+                                        name: "first_name"
                                     },
                                     {
                                         title: "Last name",
-                                        value: account.last_name
+                                        value: account.last_name,
+                                        type: "text",
+                                        name: "last_name"
                                     },
                                     {
                                         title: "Mật khẩu hiện tại",
-                                        value: ""
+                                        value: "",
+                                        type: "password",
+                                        name: "password"
                                     }
                                 ]
                         }
                     }
-
+                    showForm={{
+                        content: showModalFormUpdateName,
+                        buttonType: "update-name"
+                    }}
                 />
                 <InfoItem title="Email" content={account.email}
                     contentButton={
@@ -208,15 +272,23 @@ export const AccountInfo = ({ account }) => {
                                 [
                                     {
                                         title: "Email",
-                                        value: account.email
+                                        value: account.email,
+                                        type: "email",
+                                        name: "email"
                                     },
                                     {
                                         title: "Mật khẩu hiện tại",
-                                        value: ""
+                                        value: "",
+                                        type: "password",
+                                        name: "password"
                                     }
                                 ]
                         }
                     }
+                    showForm={{
+                        content: showModalFormUpdateEmail,
+                        buttonType: "update-email"
+                    }}
                 />
             </div>
         )
@@ -228,7 +300,7 @@ export const AccountInfo = ({ account }) => {
                 <div className="user-setting__content__right__item__content__item__user-info">
                     <AvatarWithCover src={account.thumbnail ? account.thumbnail : defaultAvatar} alt={account.username} />
                     <div className="user-setting__content__right__item__content__item__user-info__name">
-                        <h3>{account.username}</h3>
+                        <h3>{ account.first_name + account.last_name !=='' ? account.first_name +' '+ account.last_name : account.username}</h3>
                     </div>
                     <Info account={account} />
                 </div>

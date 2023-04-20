@@ -116,7 +116,7 @@
     color: #fff;
 }
 
-.item__content__item__info__item_update .btn_update {
+.user-setting__content__right__item__content .btn_update {
     background-color: #3e4046;
     border: none;
     border-radius: 5px;
@@ -127,7 +127,7 @@
     cursor: pointer;
 }
 
-.item__content__item__info__item_update .btn_update:hover {
+.user-setting__content__right__item__content .btn_update:hover {
     background-color: #4e5056;
 }
 
@@ -149,8 +149,9 @@
     border-radius: 8px;
     padding: 24px;
     box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.2);
-    text-align: center;
+    /* text-align: center; */
     position: relative;
+    transition: height 0.3s ease;
 }
 
 .close-button {
@@ -161,4 +162,21 @@
     border: none;
     padding: 8px;
     cursor: pointer;
+}
+
+/* form update */
+
+.user-setting__form_update__title{
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+.user-setting__form_update__title_description{
+    font-size: 1rem;
+    font-weight: 200;
+    color: #B5BAC1;
+    margin-bottom: 20px;
+}
+.user-setting__form_update__content .form-group{
+    margin-bottom: 20px;
 }
