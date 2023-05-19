@@ -12,35 +12,73 @@ import API_BASE_URL from '../../config';
 export const Playlist = () => {
     const dispatch = useDispatch();
     const { id } = useParams();
-    const currentSongIndex = useSelector((state) => state.currentSongIndex);
-    const isPlaying = useSelector((state) => state.isPlaying);
-    const currentIdPlaylist = useSelector((state) => state.idPlaylist);
+    const currentSongID = useSelector((state) => state.currentSong);
+
     const [playlist, setPlaylist] = useState([]);
     const [songs, setSongs] = useState([]);
+    const accountLogin = useSelector((state) => state.accountLogin);
+
     useEffect(() => {
-        axios.get(API_BASE_URL + 'playlist/' + id)
-            .then(response => {
-                setPlaylist(response.data);
-                setSongs(response.data.songs);
-            })
+        if(localStorage.getItem('access_token') && accountLogin.isLogin){
+            axios(
+                {
+                    method:'get',
+                url: API_BASE_URL + 'user/playlist/' + id,
+                headers: {
+                    authorization: 'Bearer ' + localStorage.getItem('access_token')
+                }
+                }
+            )
+                .then(response => {
+                    setPlaylist(response.data);
+                    setSongs(response.data.songs);
+                })
+                .catch(error => console.log(error));
+        }
+        else{
+            axios(
+                {
+                    method:'get',
+                url: API_BASE_URL + 'playlist/' + id,
+                }
+            )
+                .then(response => {
+                    setPlaylist(response.data);
+                    setSongs(response.data.songs);
+                })
+                .catch(error => console.log(error));
+        }
+    }, [accountLogin.isLogin]);
 
-            .catch(error => console.log(error));
-    }, []);
-
-    const handleSongClick = (index,songs) => {
+    const handleSongClick = (index, songs) => {
         dispatch(setCurrentPlaylist(songs));
         dispatch(setCurrentIdPlaylist(playlist.id));
         dispatch(setCurrentSongIndex(index));
-        console.log(currentIdPlaylist);
-        console.log('====================================');
-        console.log(songs);
-        console.log('====================================');
     };
+    const handleAddSongFavorite = (song) => {
+        
+        if (accountLogin.isLogin) {
+            axios({
+                method: 'put',
+                url: API_BASE_URL + 'user/add-song-user',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                },
+                data: {
+                    songId: song.id,
+                    islike: !song.islike
+                }
+            }).then(()=>{
+                song.islike = !song.islike;
+                setSongs([...songs]);                
+            })
+        }
+    }
     return (
 
         <div className="" id="content">
             <Navbar content={playlist.title} />
-            <div className="wrapper-top">
+            <div>
                 <div className="info">
                     <div className="image-play-list">
                         <img src={playlist.thumbnail} alt="" />
@@ -66,15 +104,15 @@ export const Playlist = () => {
                     {
                         songs.map((song, index) => {
                             return (
-                                <li className={`song-item ${currentIdPlaylist=='a'? (index===currentSongIndex ? 'song-activate':''):(currentIdPlaylist===playlist.id&&index===currentSongIndex)?'song-activate':''}` } >
-                                    <div className={`song-item__id ${currentIdPlaylist=='a'? (index===currentSongIndex ? 'spin':''):(currentIdPlaylist===playlist.id&&index===currentSongIndex)?'spin':''}`} onClick={() => handleSongClick(index,songs)}>{index + 1}</div>
+                                <li className={`song-item ${currentSongID==song.id? 'song-activate':'' }`} >
+                                    <div className={`song-item__id ${currentSongID==song.id? 'spin':''}`} onClick={() => handleSongClick(index, songs)}>{index + 1}</div>
                                     <div className='song-item__title'>{song.title}</div>
                                     <div className='song-item__author struncate'>
                                         {
                                             song.artists.map((artist, idx) => {
                                                 return (
                                                     <span key={artist.id}>
-                                                        <Link className={`link ${currentIdPlaylist=='a'? (index===currentSongIndex ? 'song-activate':''):(currentIdPlaylist===playlist.id&&index===currentSongIndex)?'song-activate':''}` } to={`/artist/${artist.alias}`}>{artist.name}</Link>
+                                                        <Link className={`link ${currentSongID==song.id? 'song-activate':''}`} to={`/artist/${artist.alias}`}>{artist.name}</Link>
                                                         {idx !== song.artists.length - 1 && ', '}
                                                     </span>
                                                 )
@@ -82,7 +120,15 @@ export const Playlist = () => {
                                             )
                                         }
                                     </div>
-                                    <div className='song-item__durations'>{new Date(song.duration * 1000).toISOString().substr(14, 5)}</div>
+                                    <div className='song-item__durations'>
+                                        <div className="add_favorite" onClick={()=>handleAddSongFavorite(song) } key={index}>
+                                            <i className={`${song.islike? 'active fas':'far'} fa-heart`} ></i>
+                                            <div className="tooltip">
+                                                <span>{song.islike? 'Remove favorite':'Add to favorite'}</span>
+                                            </div>
+                                        </div>
+                                        <div className="duration">{new Date(song.duration * 1000).toISOString().substr(14, 5)}</div>
+                                    </div>
                                 </li>
                             )
                         })

@@ -7,39 +7,35 @@ import API_BASE_URL from '../../config';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setCurrentPlaylist, setCurrentSongIndex, setIsPlaying, setSongPlaying } from '../../redux/actions';
+import { setCurrentListeningSongList, setCurrentPlaylist, setCurrentSongIndex, setIsPlaying, setSongPlaying, setCurrentSongID} from '../../redux/actions';
 export const MusicPlayer = () => {
     const dispatch = useDispatch();
     const [audio, setAudio] = useState(null);
     const audioElement = document.querySelector('audio');
     const [progress, setProgress] = useState(0);
-    const [volume, setVolume] = useState(100);
+    const [volume, setVolume] = useState(localStorage.getItem('volume') || 100);
     const [prevVolume, setPrevVolume] = useState(100);
     const playlist = useSelector((state) => state.playlist);
     const isPlaying = useSelector((state) => state.isPlaying);
     const currentSongIndex = useSelector((state) => state.currentSongIndex);
     const [currentSong, setCurrentSong] = useState(playlist[currentSongIndex]);
-
+    const accountLogin = useSelector((state) => state.accountLogin);
+    const currentListeningSongList = useSelector((state) => state.currentListeningSongList);
+    const [prevIdSong, setPrevIDSong] = useState(-1);
+    const currentSongID = useSelector((state) => state.currentSong);
     useEffect(() => {
-        setCurrentSong(playlist[currentSongIndex]);
-        // tăng lượt nghe khi bài hát được chọn
-        if (currentSong) {
-            const listenerCount = currentSong.listen + 1;
-            currentSong.listen = listenerCount;
-            console.log(currentSong.listen);
-            axios({
-                method:'put',
-                url: API_BASE_URL+'song/'+currentSong.id,
-                data: currentSong,
-                withCredentials: true
-            })
-            .catch(error => {
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            });
+        if (playlist.length > 0) {
+            if (prevIdSong !== playlist[currentSongIndex].id ) {
+                setCurrentSong(playlist[currentSongIndex]);
+                setPrevIDSong(playlist[currentSongIndex].id);
+                dispatch(setCurrentListeningSongList(playlist[currentSongIndex]))
+                dispatch(setSongPlaying(playlist[currentSongIndex].id))
+                // tăng lượt nghe khi bài hát được chọn
+                dispatch(setCurrentSongID(playlist[currentSongIndex].id))
+            }
         }
-    }, [currentSongIndex]);
+    }, [currentSongIndex, playlist]);
+
     useEffect(() => {
         if (currentSong !== null) {
             async function fetchData() {
@@ -53,8 +49,41 @@ export const MusicPlayer = () => {
 
             fetchData();
         }
+        if (currentSong) {
+            const listenerCount = currentSong.listen + 1;
+            currentSong.listen = listenerCount;
+            console.log(currentSong.listen);
+            axios({
+                method: 'put',
+                url: API_BASE_URL + 'song/' + currentSong.id,
+                data: currentSong,
+                withCredentials: true
+            }).then(res => {
+                console.log(currentSong.id);
+
+            })
+                .catch(error => {
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                });
+            if (accountLogin.isLogin) {
+                axios({
+                    method: 'put',
+                    url: API_BASE_URL + 'user/add-song-user',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                    data: {
+                        songId: currentSong.id,
+                        islike: currentSong.islike
+                    }
+                }).then(() => {
+                })
+            }
+        }
     }, [currentSong]);
-    
+
     useEffect(() => {
         // update listener count when song is changed or played 
         if (currentSong) {
@@ -62,15 +91,15 @@ export const MusicPlayer = () => {
             currentSong.listen = listenerCount;
             console.log(currentSong.listen);
             axios({
-                method:'put', 
-                url: API_BASE_URL + 'song/'+currentSong.id,
+                method: 'put',
+                url: API_BASE_URL + 'song/' + currentSong.id,
                 data: currentSong,
                 xsrfCookieName: 'csrftoken',
                 xsrfHeaderName: 'X-CSRFTOKEN',
                 withCredentials: true
             })
         }
-        
+
     }, [currentSong]);
 
 
@@ -133,11 +162,11 @@ export const MusicPlayer = () => {
 
     if (audioElement) {
         audioElement.addEventListener('timeupdate', () => {
+            audioElement.volume = volume / 100;
             const currentSeconds = Math.floor(audioElement.currentTime % 60);
             const currentMinutes = Math.floor(audioElement.currentTime / 60);
             const durationSeconds = Math.floor(audioElement.duration % 60);
             const durationMinutes = Math.floor(audioElement.duration / 60);
-
             startTimeElement.textContent = `${currentMinutes.toString().padStart(2, '0')}:${currentSeconds.toString().padStart(2, '0')}`;
             endTimeElement.textContent = `${durationMinutes.toString().padStart(2, '0')}:${durationSeconds.toString().padStart(2, '0')}`;
         });
@@ -163,6 +192,8 @@ export const MusicPlayer = () => {
         const newVolume = event.target.value; // lấy giá trị âm lượng mới từ input
         setVolume(newVolume); // cập nhật giá trị âm lượng
         setPrevVolume(newVolume); // cập nhật giá trị âm lượng
+        localStorage.setItem('volume', newVolume);
+
         audioElement.volume = newVolume / 100; // đặt giá trị âm lượng cho audio
         if (newVolume == 0) {
             volumeMuteBtn.classList.remove('fa-volume-up');
@@ -182,22 +213,13 @@ export const MusicPlayer = () => {
         } else {
             setVolume(prevVolume)
             audioElement.volume = prevVolume / 100;
+            // save to local storage
             audioElement.className = 'fa fa-volume-up';
             volumeMuteBtn.classList.remove('fa-volume-mute');
             volumeMuteBtn.classList.add('fa-volume-up');
         }
     };
-    const playPauseButton = document.getElementsByClassName('play-pause');
-    if (audioElement !== null) {
-        audioElement.addEventListener('play', () => {
-            playPauseButton[0].classList.remove('fa-play');
-            playPauseButton[0].classList.add('fa-pause');
-        });
-        audioElement.addEventListener('pause', () => {
-            playPauseButton[0].classList.remove('fa-pause');
-            playPauseButton[0].classList.add('fa-play');
-        });
-    }
+
     const handleRandomPlay = () => {
         // // Shuffle current songs array
         // const shuffledSongs = [...currentSongs].sort(() => Math.random() - 0.5);
@@ -205,85 +227,110 @@ export const MusicPlayer = () => {
         // setCurrentSongs(shuffledSongs);
         // setCurrentSong(shuffledSongs[0]);
     };
+    const handleAddSongFavorite = (currentSong) => {
 
-    return  (
+        if (accountLogin.isLogin) {
+            axios({
+                method: 'put',
+                url: API_BASE_URL + 'user/add-song-user',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                },
+                data: {
+                    songId: currentSong.id,
+                    islike: !currentSong.islike
+                }
+            }).then(() => {
+                currentSong.islike = !currentSong.islike;
+            })
+        }
+    }
 
-            <div className={`music-player ${currentSong? 'active':''}`} id="music-player">
-                <div className="song-bar">
-                    <div className="song-infos">
-                        <div className="image-container">
-                            <img id="process-image" src={currentSong?.thumbnail} alt="image" />
-                        </div>
-                        <div className="song-description">
-                            <p className="title" id="song-name">
-                                {currentSong?.title}
-                            </p>
-                            <p className="artist" id="artist-name">
-                                {currentSong?.artists.map((artist, index) => {
-                                    return (
-                                        <span key={artist.alias}>
-                                            <Link className='link' to={`/artist/${artist.alias}`}>{artist.name}</Link>
-                                            {index !== currentSong.artists.length - 1 && ', '}
-                                        </span>
-                                    )
-                                }
-                                )}
-                            </p>
-                        </div>
+    return (
+
+        <div className={`music-player ${currentSong ? 'active' : ''}`} id="music-player">
+            <div className="song-bar">
+                <div className="song-infos">
+                    <div className="image-container">
+                        <img id="process-image" src={currentSong?.thumbnail} alt="image" />
                     </div>
-                    <div className="icons">
-                        <i className="far fa-heart"></i>
-                        <i className="fas fa-compress"></i>
-                    </div>
-                </div>
-                <div className="progress-controller">
-                    <div className="control-buttons">
-                        <i className="fas fa-random" onClick={handleRandomPlay}></i>
-                        <i className="fas fa-step-backward" id="backward" onClick={handlePrevSong}></i>
-                        <i
-                            className={`play-pause fas fa-play`}
-                            onClick={
-                                handleSongPlayback
+                    <div className="song-description">
+                        <p className="title" id="song-name">
+                            {currentSong?.title}
+                        </p>
+                        <p className="artist" id="artist-name">
+                            {currentSong?.artists.map((artist, index) => {
+                                return (
+                                    <span key={artist.alias}>
+                                        <Link className='link' to={`/artist/${artist.alias}`}>{artist.name}</Link>
+                                        {index !== currentSong.artists.length - 1 && ', '}
+                                    </span>
+                                )
                             }
+                            )}
+                        </p>
+                    </div>
+                </div>
+                <div className="icons">
+                    <div className="add_favorite" onClick={() => handleAddSongFavorite(currentSong)}>
+                        <i className={`${accountLogin.isLogin && currentSong?.islike ? 'active fas' : 'far'} fa-heart`} ></i>
+                        <div className="tooltip">
+                            <span>{accountLogin.isLogin && currentSong?.islike ? 'Remove favorite' : 'Add to favorite'}</span>
+                        </div>
+                    </div>
+                </div>
+                <i className="fas fa-compress"></i>
+            </div>
+            <div className="progress-controller">
+                <div className="control-buttons">
+                    <i className="fas fa-random" onClick={handleRandomPlay}></i>
+                    <i className="fas fa-step-backward" id="backward" onClick={handlePrevSong}></i>
+                    <div className="play-pause"
+                        onClick={
+                            handleSongPlayback
+                        }>
+                        <i
+                            className={`${isPlaying ? 'fas fa-play' : 'fas fa-pause'}`}
                         ></i>
-                        <i className="fas fa-step-forward" id="forward" onClick={handleNextSong}></i>
-                        <i className="fas fa-undo-alt"></i>
                     </div>
-                    <div className="progress-container" id="#progress">
-                        <span id="start-time">00:00</span>
-                        <div className="progress-bar">
-                            <input
-                                type="range"
-                                className="progress"
-                                id="progressMusic"
-                                min="0"
-                                max="100"
-                                value={progress}
-                                onChange={handleProgressChange}
-                            />
-                        </div>
-                        <span id="time-end">00:00</span>
+                    <i className="fas fa-step-forward" id="forward" onClick={handleNextSong}></i>
+                    <i className="fas fa-undo-alt"></i>
+                </div>
+                <div className="progress-container" id="#progress">
+                    <span id="start-time">00:00</span>
+                    <div className="progress-bar">
+                        <input
+                            type="range"
+                            className="progress"
+                            id="progressMusic"
+                            min="0"
+                            max="100"
+                            value={progress}
+                            onChange={handleProgressChange}
+                        />
+                    </div>
+                    <span id="time-end">00:00</span>
+                </div>
+            </div>
+            <div className="other-features">
+                <i className="fas fa-list-ul"></i>
+                <i className="fas fa-desktop"></i>
+                <div className="volume-bar">
+                    <i className="fas fa-volume-down" id="mute-volume" onClick={handleMute}></i>
+                    <div className="progress-bar">
+                        <input
+                            type="range"
+                            className="progress"
+                            id="volume-bar"
+                            min="0"
+                            max="100"
+                            value={volume}
+                            onChange={handleVolumeChange}
+                        />
                     </div>
                 </div>
-                <div className="other-features">
-                    <i className="fas fa-list-ul"></i>
-                    <i className="fas fa-desktop"></i>
-                    <div className="volume-bar">
-                        <i className="fas fa-volume-down" id="mute-volume" onClick={handleMute}></i>
-                        <div className="progress-bar">
-                            <input
-                                type="range"
-                                className="progress"
-                                id="volume-bar"
-                                min="0"
-                                max="100"
-                                value={volume}
-                                onChange={handleVolumeChange}
-                            />
-                        </div>
-                    </div>
-                    <audio src={audio?.url} preload="metadata" ></audio>
-                </div>
+                <audio src={audio?.url} preload="metadata" ></audio>
+            </div>
         </div>
     );
 };

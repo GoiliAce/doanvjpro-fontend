@@ -60,15 +60,19 @@ ol, ul{
 	--light-yellow: #FFF2C6;
 	--orange: #FD7238;
 	--light-orange: #FFE0D3;
+  
 }
 
 
-
+li{
+  list-style: none;
+}
 .no-padding {
   padding: 0 !important;
 }
 .no-margin{
-  margin: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
 }
 .no-border{
   border: none !important;

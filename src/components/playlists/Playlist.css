@@ -1,17 +1,19 @@
 .info{
-    padding: 64px 128px;
+    padding: 48px 128px;
     display: flex;
     position: relative;
     align-items: center;
     gap: 30px;
 }
 .image-play-list{
-    width: 420px;
-    height: 420px;
+    width: 288px;
+    height: 288px;
 }
 .image-play-list img{
     width: 100%;
     /* border-radius: 50%; */
+    border-radius: 0.75em;
+
     object-fit: cover;
 }
 .info__playlist{
@@ -26,9 +28,7 @@
 .list-songs {
     padding: 0 64px;
 }
-.wrapper-songs{
-    margin-bottom: 96px;
-}
+
 .song-item{
     display: grid;
     grid-template-columns: [index] 60px [first] 6fr [var1] 3fr [last] minmax(120px,1fr);
@@ -76,4 +76,43 @@
 }
 .song-activate.link{
     color: var(--blue);
+}
+.song-item__durations{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: relative;
+
+}
+.song-item__durations .add_favorite{
+    margin-right: 32px;
+    cursor: pointer;
+    display: none;
+}
+.song-item:not(:first-child):hover .add_favorite{
+    display: block;
+}
+/* thêm bong bóng chú thích */
+.song-item__durations .add_favorite .tooltip{
+    position: absolute;
+    top: -45px;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #1d1d1d;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    color: #fff;
+    transition: all 0.3s ease-in-out;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.song-item__durations .add_favorite:hover .tooltip{
+    opacity: 1;
+    /* top: -60px; */
+}
+.song-item__durations i.active{
+    color: red;
 }

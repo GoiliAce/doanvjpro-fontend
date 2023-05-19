@@ -18,6 +18,7 @@ export const Artist = () => {
             .then(response => {
                 setArtist(response.data);
                 setSongs(response.data.songs);
+                setAlbums(response.data.albums);
             })
 
             .catch(error => console.log(error));
@@ -44,7 +45,7 @@ export const Artist = () => {
                     </div>
                 </div>
             </div>
-           <ContentArtist songs={songs} artist={artist} />
+           <ContentArtist songs={songs} artist={artist} albums={albums} />
         </div>
     )
 }

@@ -58,7 +58,9 @@ export const Playlists = (props) => {
                                             <OwlCarousel className="owl-theme" {...options}>
                                             {
                                                 topic["playlists"].map((playlist) => {
+                                                    
                                                     return (
+                                                        
                                                         <div className="item" key={playlist.id}>
                                                         <Link to={`/${"playlist"}/${playlist.id}`}>
                                                             <div className="card-song">

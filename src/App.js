@@ -17,6 +17,7 @@ import { Album } from "./components/albums/album";
 import { SearchPage } from "./components/search/search";
 
 const App = () => {
+  
   return (
     <div>
       <BrowserRouter>

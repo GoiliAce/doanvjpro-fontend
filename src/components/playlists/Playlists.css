@@ -24,9 +24,10 @@ a{
 }
 
 .topic-content .item{
-    background-color: #040404;
+    background-color: #26262627;
     border-radius: 8px;
-    border: #606060 1px solid;
+    border: #6060601c 1px solid;
+    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 0px 24px; */
 }
 .topic-content .item:hover{
     background-color: #181818;

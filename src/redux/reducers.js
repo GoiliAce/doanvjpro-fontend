@@ -1,4 +1,13 @@
-import {SET_PLAYLIST, SET_CURRENT_SONG_INDEX, SET_IS_PLAYING, SET_SONG_PLAYING, SET_ID_PLAYLIST, SET_ACCOUNT_LOGIN, SET_SHOW_LOGIN_FORM, SET_SHOW_SETTING_FORM} from './actions';
+import {SET_PLAYLIST, 
+        SET_CURRENT_SONG_INDEX, 
+        SET_IS_PLAYING, 
+        SET_SONG_PLAYING, 
+        SET_ID_PLAYLIST, 
+        SET_ACCOUNT_LOGIN, 
+        SET_SHOW_LOGIN_FORM, 
+        SET_SHOW_SETTING_FORM,
+        SET_CURRENT_LISTENING_SONG_LIST,
+        SET_CURRENT_SONG} from './actions';
 const initialState = {
     playlist: [],
     currentSongIndex: -1,
@@ -12,7 +21,9 @@ const initialState = {
         isLogin: false
     },
     showLoginForm: false,
-    accessToken: ''
+    accessToken: '',
+    currentListeningSongList: JSON.parse(localStorage.getItem('currentListeningSongList')) || [],
+    currentSong: ''
 };
 
 const reducer = (state = initialState, action) => {
@@ -57,7 +68,37 @@ const reducer = (state = initialState, action) => {
                 ...state,
                 showSettingForm: action.payload
             };
+        case SET_CURRENT_LISTENING_SONG_LIST:
+            const newSongs = [...state.currentListeningSongList, action.payload];
+            if (newSongs.length > 5) {
+                newSongs.shift();
+            }
+            // remove null item
 
+            for (let i = 0; i < newSongs.length; i++) {
+                
+            }
+            // nếu đã tồn tại thì xóa cái cũ đi, thêm cái mới vào
+            for (let i = 0; i < newSongs.length; i++) {
+                if (newSongs[i] == null) {
+                    newSongs.splice(i, 1);
+                }
+                for (let j = newSongs.length-1; j > newSongs.length; j++) {
+                    if (newSongs[i].id === newSongs[j].id) {
+                        newSongs.splice(i, 1);
+                    }
+                }
+            }
+            localStorage.setItem('currentListeningSongList', JSON.stringify(newSongs));
+            return {
+                ...state,
+                currentListeningSongList: newSongs
+            };
+        case SET_CURRENT_SONG:
+            return {
+                ...state,
+                currentSong: action.payload
+            };
         default:
             return state;
     }

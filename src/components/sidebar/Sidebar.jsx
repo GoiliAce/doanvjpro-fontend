@@ -9,11 +9,15 @@ import API_BASE_URL from '../../config';
 import axios from 'axios';
 import { UserSetting } from '../userSetting/userSetting';
 import defaultAvatar from '../../assets/images/avt.png';
+import { setCurrentIdPlaylist, setCurrentPlaylist, setCurrentSongIndex } from '../../redux/actions';
 export const Sidebar = () => {
     const dispatch = useDispatch();
     const [isSidebarHidden, setIsSidebarHidden] = useState(true);
     const accountLogin = useSelector((state) => state.accountLogin);
     const access_token = localStorage.getItem('access_token');
+    const currentListeningSongList = useSelector((state) => state.currentListeningSongList);
+    const reversedList = currentListeningSongList.slice().reverse();
+    const currentIdPlaylist = useSelector((state) => state.idPlaylist);
     useEffect(() => {
         const access_token = localStorage.getItem('access_token');
         const fetchData = async () => {
@@ -35,7 +39,6 @@ export const Sidebar = () => {
         }
         fetchData();
     }, [accountLogin.isLogin, dispatch]);
-
     console.log(accountLogin);
 
     const toggleSidebar = () => {
@@ -53,6 +56,8 @@ export const Sidebar = () => {
                 }
             ))
             localStorage.removeItem('access_token');
+            // localStorage.removeItem('currentListeningSongList');
+
         } else {
             dispatch(setShowLoginForm(true));
         }
@@ -79,7 +84,10 @@ export const Sidebar = () => {
     const handleOpenUserSetting = () => {
         dispatch(setShowSettingForm(true));
     }
-
+    const handleClick = (currentListeningSongList, index) => {
+        dispatch(setCurrentPlaylist(currentListeningSongList));
+        dispatch(setCurrentSongIndex(index));
+    }
     return (
         <section id="sidebar" className={isSidebarHidden ? 'hide' : ''}>
             <div href="#" className="brand">
@@ -121,7 +129,7 @@ export const Sidebar = () => {
                     </a>
                 </li>
             </ul>
-            <ul className="side-menu">
+            <ul className="side-menu center">
                 {
                     accountLogin.isLogin ? (
                         <li>
@@ -147,6 +155,43 @@ export const Sidebar = () => {
                     </div>
                 </li>
             </ul>
+            {
+                currentListeningSongList.length > 0 ? (
+                    <ul className="current-listening__list">
+                        {
+                            reversedList.map((item, index) => {
+                                return (
+                                    <li key={index}>
+                                        <div className="current-listening__item">
+                                            <div className="current-listening__item__img user__img" onClick={()=>handleClick(reversedList,index)}>
+                                                <img className='avatar-sidebar' src={item.thumbnail} alt="" />
+                                            </div>
+                                            <div className="current-listening__item__info">
+                                                <div className="current-listening__item__info__title struncate" onClick={()=>handleClick(reversedList,index)}>
+                                                    <span>{item.title}</span>
+                                                </div>
+                                                <div className="current-listening__item__info__artist">
+                                                    {
+                                                        item.artists.map((artist, idx) => {
+                                                            return (
+                                                                <span key={artist.id}>
+                                                                    <Link className={`link`} to={`/artist/${artist.alias}`}>{artist.name}</Link>
+                                                                    {idx !== item.artists.length - 1 && ', '}
+                                                                </span>
+                                                            )
+                                                        })
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                )
+                            })
+                        }
+                    </ul>
+
+                ) : null
+            }
         </section>
     );
 }

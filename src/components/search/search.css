@@ -42,7 +42,7 @@
 }
 .search__content__list_song__item__img:hover .song-item-play-btn{
     display: block;
-    cursor: pointer;;
+    cursor: pointer;
 }
 .search__content__list_song__item__img:hover img{
     opacity: 0.3;

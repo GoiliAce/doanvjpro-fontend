@@ -15,8 +15,10 @@
     "babel-plugin-macros": "^3.1.0",
     "bootstrap": "^5.2.3",
     "boxicons": "^2.1.4",
+    "colorthief": "^2.4.0",
     "font-awesome": "^4.7.0",
     "jquery": "^3.6.4",
+    "node-vibrant": "^3.2.1-alpha.1",
     "owl.carousel": "^2.3.4",
     "query-string": "^8.1.0",
     "react": "^18.2.0",
@@ -29,7 +31,8 @@
     "react-scripts": "5.0.1",
     "redux": "^4.2.1",
     "styled-components": "^5.3.9",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zingmp3-api-full-v2": "^1.0.11"
   },
   "scripts": {
     "start": "react-scripts start",

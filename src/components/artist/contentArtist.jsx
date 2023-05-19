@@ -3,7 +3,7 @@ import './contentArtist.css'
 import { useDispatch } from 'react-redux';
 import { setCurrentIdPlaylist, setCurrentPlaylist, setCurrentSongIndex } from '../../redux/actions';
 import { useSelector } from 'react-redux';
-export const ContentArtist = ({songs, artist}) => {
+export const ContentArtist = ({songs, artist, albums}) => {
     const col = 6
     const dispatch = useDispatch();
     const handleSongClick = (index,songs) => {
@@ -13,7 +13,7 @@ export const ContentArtist = ({songs, artist}) => {
     };
     return (
         <div className="wrapper-content">
-        <div className="row list-songs no-margin">
+        <div className="row list-songs no-margin mb-5">
             <h2 className='text-white'>Popular</h2>
             {
                 songs && songs.map((song, index) => {
@@ -41,9 +41,28 @@ export const ContentArtist = ({songs, artist}) => {
                     )
                 })
             }
-            <h2 className='text-white'>Album</h2>
-
-        </div>
+       </div>
+       <div className="list-songs list-albums">
+       <h2 className='text-white'>Album</h2>
+                {
+                    albums.length > 0 && (
+                        <ul className='search__content__list_album p-0'>
+                                    {albums.map((album, index) => (
+                                        <li key={index} className="search__content__list_album__item">
+                                            <Link className='link search__content__list_album__item_wrapper' to={`/album/${album.id}`}>
+                                                <div className="search__content__list_album__item__img">
+                                                    <img src={album.thumbnail} alt="album" />
+                                                </div>
+                                                <div className="search__content__list_album__item__info">
+                                                    <h4>{album.title}</h4>
+                                                </div>
+                                            </Link>
+                                        </li>
+                                    ))}
+                                </ul>
+                        )
+                }
+       </div>
     </div>
     )
 }
