@@ -14,14 +14,19 @@ export const Artist = () => {
     const [songs, setSongs] = useState([]);
 
     useEffect(() => {
-        axios.get(API_BASE_URL + 'artist/' + alias)
-            .then(response => {
+        try{
+            const fetchData = async () => {
+                const response = await axios.get(API_BASE_URL + 'artist/' + alias);
                 setArtist(response.data);
-                setSongs(response.data.songs);
                 setAlbums(response.data.albums);
-            })
+                setSongs(response.data.songs);
+            }
+            fetchData();
+        }
+        catch(error){
+            console.log(error);
+        }
 
-            .catch(error => console.log(error));
     }, [alias]);
     return (
         <div className="artist-wrapper" id='content'>

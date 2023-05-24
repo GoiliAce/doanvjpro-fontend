@@ -26,42 +26,40 @@ export const Home = () => {
         dots: false,
     };
     useEffect(() => {
-        if (localStorage.getItem('access_token') && accountLogin.isLogin) {
-            axios(
-                {
-                    method: 'get',
-                    url: API_BASE_URL + 'user/recommend/',
-                    headers: {
-                        authorization: 'Bearer ' + localStorage.getItem('access_token')
-                    }
-                }
-            )
-                .then(response => {
-                    setUserfavorite(response.data);
-                    console.log("hihi", response.data);
+        const fetchRecommendations = async () => {
+            if (localStorage.getItem('access_token') && accountLogin.isLogin) {
+                try {
+                    const userFavorites = await axios({
+                        method: 'get',
+                        url: API_BASE_URL + 'user/recommend/',
+                        headers: {
+                            authorization: 'Bearer ' + localStorage.getItem('access_token')
+                        }
+                    });
+                    setUserfavorite(userFavorites.data);
+                    console.log("hihi", userFavorites.data);
 
-                })
-                .catch(error => console.log(error));
-
-            axios(
-                {
-                    method: 'get',
-                    url: API_BASE_URL + 'user/recommend/album',
-                    headers: {
-                        authorization: 'Bearer ' + localStorage.getItem('access_token')
-                    }
+                    const albumsForYou = await axios({
+                        method: 'get',
+                        url: API_BASE_URL + 'user/recommend/album',
+                        headers: {
+                            authorization: 'Bearer ' + localStorage.getItem('access_token')
+                        }
+                    });
+                    setAlbumsForYou(albumsForYou.data);
+                    console.log("hihi1", albumsForYou.data);
+                } catch (error) {
+                    console.log(error);
                 }
-            ).then(response => {
-                setAlbumsForYou(response.data);
-                console.log("hihi1", response.data);
-            })
-                .catch(error => console.log(error));
-        }
-        else {
-            setUserfavorite([]);
-            setAlbumsForYou([]);
-        }
+            } else {
+                setUserfavorite([]);
+                setAlbumsForYou([]);
+            }
+        };
+
+        fetchRecommendations();
     }, [accountLogin.isLogin, localStorage.getItem('access_token')]);
+
 
 
     // useEffect(() => {
@@ -96,23 +94,23 @@ export const Home = () => {
                                                 <div className='topic__list_song__item_wrapper'>
                                                     <div className="topic__list_song__item__img" onClick={() => handleClick(song, index)}>
                                                         <img src={song.thumbnail} alt="song" />
-                                                        <div className="song-item-play-btn"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAAAXNSR0IArs4c6QAAAWJJREFUeF7tmlEKAjEMBTcHF/Q8eiBvUym4f6Kw2SbvyfivtrMzAYOx8fpKIODznQCAfhgCIADlhggGYRAG5QhgUI4fMwiDMChHAINy/JhBGIRBOQIYlOPHDOowaIxx37btEhHP3PPrf/cSg8YY4321a0Tc+q95/ASrAc2TTYumTY/jx+x7ZwWg/XYTkF12lYB2UFbZdQCyyq4LkE123YDks1MBJJudEiDJ7BQBSWWnDEgiO3VA7dm5AGrLzg1QeXaOgEqzcwZUkt0/AFqaHYCaVq77RrFi07V0feJsUMkCzhFQ6QrXDdDSnD7NAxdAJTk5AirNyQ1QeU4ugNpyUgfUnpMyIImcFAFJ5aQESDInFUCyOXUDks+pC5BNTh2ArHKqBMRf8Co2YQrfseTXvMLFzjoDgDp20mc9PYXPwSAMynmIQRiEQTkCGJTjxwzCIAzKEcCgHD9mEAZhUI4ABuX4vQBtbspJppNmhwAAAABJRU5ErkJggg=="/></div>
+                                                        <div className="song-item-play-btn"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAAAAXNSR0IArs4c6QAAAWJJREFUeF7tmlEKAjEMBTcHF/Q8eiBvUym4f6Kw2SbvyfivtrMzAYOx8fpKIODznQCAfhgCIADlhggGYRAG5QhgUI4fMwiDMChHAINy/JhBGIRBOQIYlOPHDOowaIxx37btEhHP3PPrf/cSg8YY4321a0Tc+q95/ASrAc2TTYumTY/jx+x7ZwWg/XYTkF12lYB2UFbZdQCyyq4LkE123YDks1MBJJudEiDJ7BQBSWWnDEgiO3VA7dm5AGrLzg1QeXaOgEqzcwZUkt0/AFqaHYCaVq77RrFi07V0feJsUMkCzhFQ6QrXDdDSnD7NAxdAJTk5AirNyQ1QeU4ugNpyUgfUnpMyIImcFAFJ5aQESDInFUCyOXUDks+pC5BNTh2ArHKqBMRf8Co2YQrfseTXvMLFzjoDgDp20mc9PYXPwSAMynmIQRiEQTkCGJTjxwzCIAzKEcCgHD9mEAZhUI4ABuX4vQBtbspJppNmhwAAAABJRU5ErkJggg==" /></div>
                                                     </div>
                                                     <div className="topic__list_song__item__info">
                                                         <p className='topic__list_song__item__name struncate'>{song.title}</p>
-                                                            <div className="topic__list_song__item__authors struncate">
-                                                                {
-                                                                    song.artists.map((artist, index) => {
-                                                                        return (
-                                                                            <Link to={`/artist/${artist.alias}`} className='link'>
-                                                                                <span>{artist.name}</span>
-                                                                                {index !== song.artists.length - 1 && ', '}
-                                                                            </Link>
-                                                                        )
-                                                                    })
-                                                                }
-                                                            </div>
-                                                            
+                                                        <div className="topic__list_song__item__authors struncate">
+                                                            {
+                                                                song.artists.map((artist, index) => {
+                                                                    return (
+                                                                        <Link to={`/artist/${artist.alias}`} className='link'>
+                                                                            <span>{artist.name}</span>
+                                                                            {index !== song.artists.length - 1 && ', '}
+                                                                        </Link>
+                                                                    )
+                                                                })
+                                                            }
+                                                        </div>
+
                                                     </div>
                                                 </div>
                                             </li>
@@ -129,17 +127,17 @@ export const Home = () => {
                                         {albumsForYou.map((album, index) => {
                                             return (
                                                 <div className="item" key={index}>
-                                                <Link to={`/${"album"}/${album.id}`}>
-                                                    <div className="card-song">
-                                                        <div className="card-song-img">
-                                                            <img src={album.thumbnail} alt="{playlist.title}" />
+                                                    <Link to={`/${"album"}/${album.id}`}>
+                                                        <div className="card-song">
+                                                            <div className="card-song-img">
+                                                                <img src={album.thumbnail} alt="{playlist.title}" />
+                                                            </div>
+                                                            <div className="card-song-info">
+                                                                <div className="struncate card-song-name">{album.title}</div>
+                                                            </div>
                                                         </div>
-                                                        <div className="card-song-info">
-                                                            <div className="struncate card-song-name">{album.title}</div>
-                                                        </div>
-                                                    </div>
-                                                </Link>
-                                            </div>
+                                                    </Link>
+                                                </div>
                                             )
                                         })}
                                     </OwlCarousel>

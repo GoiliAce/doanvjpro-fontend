@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import 'boxicons';
 import './sidebar.css';
 import { useSelector } from 'react-redux';
@@ -14,31 +14,34 @@ export const Sidebar = () => {
     const dispatch = useDispatch();
     const [isSidebarHidden, setIsSidebarHidden] = useState(true);
     const accountLogin = useSelector((state) => state.accountLogin);
-    const access_token = localStorage.getItem('access_token');
     const currentListeningSongList = useSelector((state) => state.currentListeningSongList);
     const reversedList = currentListeningSongList.slice().reverse();
     const currentIdPlaylist = useSelector((state) => state.idPlaylist);
-    useEffect(() => {
-        const access_token = localStorage.getItem('access_token');
-        const fetchData = async () => {
-            if (access_token && !accountLogin.isLogin) {
-                try {
-                    const response = await axios.get(`${API_BASE_URL}user`, {
-                        headers: {
-                            'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-                        }
-                    });
-                    dispatch(setAccountLogin({
-                        ...response.data,
-                        isLogin: true
-                    }));
-                } catch (error) {
-                    console.log(error);
-                }
+    const [access_token, setAccessToken] = useState(localStorage.getItem('access_token'));
+    const [isLogin, setIsLogin] = useState(false);
+
+    const fetchData = useCallback(async () => {
+        if (access_token && !accountLogin.isLogin) {
+            try {
+                const response = await axios.get(`${API_BASE_URL}user`, {
+                    headers: {
+                        'Authorization': `Bearer ${access_token}`
+                    }
+                });
+                setAccountLogin({
+                    ...response.data,
+                    isLogin: true
+                });
+            } catch (error) {
+                console.log(error);
             }
         }
+    }, [access_token]);
+
+    useEffect(() => {
         fetchData();
-    }, [accountLogin.isLogin, dispatch]);
+    }, [access_token]);
+
     console.log(accountLogin);
 
     const toggleSidebar = () => {

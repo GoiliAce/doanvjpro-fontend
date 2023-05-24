@@ -20,38 +20,29 @@ export const Album = () => {
     const accountLogin = useSelector((state) => state.accountLogin);
     const currentSongID = useSelector((state) => state.currentSong);
     useEffect(() => {
-        if(localStorage.getItem('access_token') && accountLogin.isLogin){
-            axios(
-                {
-                    method:'get',
-                url: API_BASE_URL + 'user/album/' + id,
-                headers: {
-                    authorization: 'Bearer ' + localStorage.getItem('access_token')
-                }
-                }
-            )
-                .then(response => {
+        const fetchData = async () => {
+            try {
+                if (localStorage.getItem('access_token') && accountLogin.isLogin) {
+                    const response = await axios.get(API_BASE_URL + 'user/album/' + id, {
+                        headers: {
+                            authorization: 'Bearer ' + localStorage.getItem('access_token')
+                        }
+                    });
                     setPlaylist(response.data);
                     setSongs(response.data.songs);
-                })
-    
-                .catch(error => console.log(error));
-        }
-        else{
-            axios(
-                {
-                    method:'get',
-                url: API_BASE_URL + 'album/' + id,
-                }
-            )
-                .then(response => {
+                } else {
+                    const response = await axios.get(API_BASE_URL + 'album/' + id);
                     setPlaylist(response.data);
                     setSongs(response.data.songs);
-                })
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
     
-                .catch(error => console.log(error));
-        }
+        fetchData();
     }, [accountLogin.isLogin]);
+    
 
     const handleSongClick = (index, songs) => {
         dispatch(setCurrentPlaylist(songs));
