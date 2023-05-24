@@ -20,7 +20,7 @@ export const Album = () => {
     const accountLogin = useSelector((state) => state.accountLogin);
     const currentSongID = useSelector((state) => state.currentSong);
     useEffect(() => {
-        if(localStorage.getItem('access_token')){
+        if(localStorage.getItem('access_token') && accountLogin.isLogin){
             axios(
                 {
                     method:'get',

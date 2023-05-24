@@ -20,6 +20,9 @@ export const Playlist = () => {
 
     useEffect(() => {
         if(localStorage.getItem('access_token') && accountLogin.isLogin){
+            console.log('====================================');
+            console.log("account type:"+ accountLogin.isLogin);
+            console.log('====================================');
             axios(
                 {
                     method:'get',

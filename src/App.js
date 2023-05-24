@@ -16,6 +16,10 @@ import { Albums } from "./components/albums/albums";
 import { Album } from "./components/albums/album";
 import { SearchPage } from "./components/search/search";
 
+// it demo i will delete it later
+
+import {ChartDemo} from "./components/chart/chartContent";
+
 const App = () => {
   
   return (
@@ -33,6 +37,7 @@ const App = () => {
             <Route path="album/:id" element={<Album />} />
             <Route path='search/' element={<SearchPage />} />
             <Route path="*" element={<Error id='content' img={e404} content="404 page not found" />} />
+            <Route path="chart"  element={<ChartDemo />}/>
           </Routes>
           <MusicPlayer />
         </BrowserRouter>

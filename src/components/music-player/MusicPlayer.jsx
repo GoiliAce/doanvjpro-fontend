@@ -7,7 +7,7 @@ import API_BASE_URL from '../../config';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux';
-import { setCurrentListeningSongList, setCurrentPlaylist, setCurrentSongIndex, setIsPlaying, setSongPlaying, setCurrentSongID} from '../../redux/actions';
+import { setCurrentListeningSongList, setCurrentPlaylist, setCurrentSongIndex, setIsPlaying, setSongPlaying, setCurrentSongID } from '../../redux/actions';
 export const MusicPlayer = () => {
     const dispatch = useDispatch();
     const [audio, setAudio] = useState(null);
@@ -25,14 +25,57 @@ export const MusicPlayer = () => {
     const currentSongID = useSelector((state) => state.currentSong);
     useEffect(() => {
         if (playlist.length > 0) {
-            if (prevIdSong !== playlist[currentSongIndex].id ) {
+            if (prevIdSong !== playlist[currentSongIndex].id) {
                 setCurrentSong(playlist[currentSongIndex]);
                 setPrevIDSong(playlist[currentSongIndex].id);
                 dispatch(setCurrentListeningSongList(playlist[currentSongIndex]))
                 dispatch(setSongPlaying(playlist[currentSongIndex].id))
-                // tăng lượt nghe khi bài hát được chọn
                 dispatch(setCurrentSongID(playlist[currentSongIndex].id))
+                // tăng lượt nghe khi bài hát được chọn
+                if (currentSong) {
+                    axios({
+                        method: 'post',
+                        url: API_BASE_URL + 'song/update-listen/' + currentSong.id,
+                    }).then(res => {
+                        console.log(currentSong.id);
+                    }).catch(error => {
+                        console.log("update listen fall");
+                    });
+                    const listenerCount = currentSong.listen + 1;
+                    currentSong.listen = listenerCount;
+                    console.log(currentSong.listen);
+                    axios({
+                        method: 'put',
+                        url: API_BASE_URL + 'song/' + currentSong.id,
+                        data: currentSong,
+                        withCredentials: true
+                    }).then(res => {
+                        console.log(currentSong.id);
+
+                    })
+                        .catch(error => {
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                            console.log(error.response.headers);
+                        });
+                    if (accountLogin.isLogin) {
+                        axios({
+                            method: 'put',
+                            url: API_BASE_URL + 'user/add-song-user',
+                            headers: {
+                                'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                            },
+                            data: {
+                                songId: currentSong.id,
+                                islike: currentSong.islike
+                            }
+                        }).then(() => {
+                        })
+                    }
+                    
+                }
             }
+
         }
     }, [currentSongIndex, playlist]);
 
@@ -48,56 +91,15 @@ export const MusicPlayer = () => {
             }
 
             fetchData();
-        }
-        if (currentSong) {
-            const listenerCount = currentSong.listen + 1;
-            currentSong.listen = listenerCount;
-            console.log(currentSong.listen);
-            axios({
-                method: 'put',
-                url: API_BASE_URL + 'song/' + currentSong.id,
-                data: currentSong,
-                withCredentials: true
-            }).then(res => {
-                console.log(currentSong.id);
 
-            })
-                .catch(error => {
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                });
-            if (accountLogin.isLogin) {
-                axios({
-                    method: 'put',
-                    url: API_BASE_URL + 'user/add-song-user',
-                    headers: {
-                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
-                    },
-                    data: {
-                        songId: currentSong.id,
-                        islike: currentSong.islike
-                    }
-                }).then(() => {
-                })
-            }
+
         }
     }, [currentSong]);
 
     useEffect(() => {
         // update listener count when song is changed or played 
         if (currentSong) {
-            const listenerCount = currentSong.listen + 1;
-            currentSong.listen = listenerCount;
-            console.log(currentSong.listen);
-            axios({
-                method: 'put',
-                url: API_BASE_URL + 'song/' + currentSong.id,
-                data: currentSong,
-                xsrfCookieName: 'csrftoken',
-                xsrfHeaderName: 'X-CSRFTOKEN',
-                withCredentials: true
-            })
+
         }
 
     }, [currentSong]);

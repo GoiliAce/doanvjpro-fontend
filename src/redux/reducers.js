@@ -74,16 +74,12 @@ const reducer = (state = initialState, action) => {
                 newSongs.shift();
             }
             // remove null item
-
-            for (let i = 0; i < newSongs.length; i++) {
-                
-            }
             // nếu đã tồn tại thì xóa cái cũ đi, thêm cái mới vào
             for (let i = 0; i < newSongs.length; i++) {
                 if (newSongs[i] == null) {
                     newSongs.splice(i, 1);
                 }
-                for (let j = newSongs.length-1; j > newSongs.length; j++) {
+                for(let j = i + 1; j < newSongs.length; j++) {
                     if (newSongs[i].id === newSongs[j].id) {
                         newSongs.splice(i, 1);
                     }
