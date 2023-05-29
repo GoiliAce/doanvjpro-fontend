@@ -44,24 +44,27 @@ export const AccountInfo = ({ account }) => {
             const form = event.target;
             const formData = new FormData(form);
             const data = Object.fromEntries(formData);
+            console.log('====================================');
+            console.log(data);
+            console.log('====================================');
             // Thay đổi dữ liệu ở đây
 
             const res = await checkPassword(data.password);
-            delete data.password;
-            if (res) {
 
+            if (res) {
             const result = await updateAccount({...account, ...data});
             if (result) {
-              dispatch(setAccountLogin({...account, ...data}));
+                delete data.password;
+                dispatch(setAccountLogin({...account, ...data}));
             handleButtonClickClose(buttonType)
 
             } else {
-              setWrongemail(true);
+                setWrongemail(true);
             }}
             else {
                 setWrongpass(true);
             // Đóng form
-          }
+            }
         };
         return contentButton && showForm && (
             <div className="modal-background">
@@ -116,7 +119,6 @@ export const AccountInfo = ({ account }) => {
         }
     }
     const checkPassword = async (password) => {
-        const access_token = localStorage.getItem('access_token');
         const username = account.username;
         try {
             const response = await axios.post(`${API_BASE_URL}login`, 

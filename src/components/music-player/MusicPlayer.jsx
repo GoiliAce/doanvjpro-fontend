@@ -33,6 +33,7 @@ export const MusicPlayer = () => {
                 dispatch(setCurrentSongID(playlist[currentSongIndex].id))
                 // tăng lượt nghe khi bài hát được chọn
                 if (currentSong) {
+                    
                     axios({
                         method: 'post',
                         url: API_BASE_URL + 'song/update-listen/' + currentSong.id,
@@ -59,6 +60,10 @@ export const MusicPlayer = () => {
                             console.log(error.response.headers);
                         });
                     if (accountLogin.isLogin) {
+                        console.log('====================================');
+                        console.log("duration: ",audioElement.currentTime);
+                        console.log('====================================');
+                        const islike = currentSong.islike? currentSong.islike: 0;
                         axios({
                             method: 'put',
                             url: API_BASE_URL + 'user/add-song-user',
@@ -67,7 +72,8 @@ export const MusicPlayer = () => {
                             },
                             data: {
                                 songId: currentSong.id,
-                                islike: currentSong.islike
+                                islike: currentSong.islike,
+                                duration: audioElement.currentTime
                             }
                         }).then(() => {
                         })
@@ -81,29 +87,41 @@ export const MusicPlayer = () => {
 
     useEffect(() => {
         if (currentSong !== null) {
-            async function fetchData() {
-                try {
-                    const response = await axios.get(API_BASE_URL + `audio/${currentSong.id}`);
-                    setAudio(response.data);
-                } catch (error) {
-                    console.log(error);
-                }
+            setAudio(currentSong?.audio);
+            console.log("audio url: " + audio);
+            if (accountLogin.isLogin) {
+                console.log('====================================');
+                console.log("duration: ",audioElement.currentTime);
+                console.log('====================================');
+                const islike = currentSong.islike? currentSong.islike: 0;
+                axios({
+                    method: 'put',
+                    url: API_BASE_URL + 'user/add-song-user',
+                    headers: {
+                        'Authorization': 'Bearer ' + localStorage.getItem('access_token')
+                    },
+                    data: {
+                        songId: currentSong.id,
+                        islike: currentSong.islike,
+                        duration: audioElement.currentTime
+                    }
+                }).then(() => {
+                })
             }
+            // async function fetchData() {
+            //     try {
+            //         const response = await axios.get(API_BASE_URL + `audio/${currentSong.id}`);
+            //         setAudio(response.data);
+            //     } catch (error) {
+            //         console.log(error);
+            //     }
+            // }
 
-            fetchData();
-
+            // fetchData();
+            
 
         }
     }, [currentSong]);
-
-    useEffect(() => {
-        // update listener count when song is changed or played 
-        if (currentSong) {
-
-        }
-
-    }, [currentSong]);
-
 
 
     // auto next song
@@ -331,7 +349,7 @@ export const MusicPlayer = () => {
                         />
                     </div>
                 </div>
-                <audio src={audio?.url} preload="metadata" ></audio>
+                <audio src={audio} preload="metadata" ></audio>
             </div>
         </div>
     );

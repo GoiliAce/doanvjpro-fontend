@@ -15,13 +15,10 @@ import { Error } from "./components/subcomponents/subcomponents";
 import { Albums } from "./components/albums/albums";
 import { Album } from "./components/albums/album";
 import { SearchPage } from "./components/search/search";
-
+import { User } from "./components/user/user";
 // it demo i will delete it later
-
-import {ChartDemo} from "./components/chart/chartContent";
-
 const App = () => {
-  
+
   return (
     <div>
       <BrowserRouter>
@@ -36,8 +33,8 @@ const App = () => {
             <Route path="albums" element={<Albums/>} />
             <Route path="album/:id" element={<Album />} />
             <Route path='search/' element={<SearchPage />} />
+            <Route path='user/' element={ <User/>} />
             <Route path="*" element={<Error id='content' img={e404} content="404 page not found" />} />
-            <Route path="chart"  element={<ChartDemo />}/>
           </Routes>
           <MusicPlayer />
         </BrowserRouter>

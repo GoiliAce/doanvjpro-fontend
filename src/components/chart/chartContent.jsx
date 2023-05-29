@@ -4,7 +4,7 @@ import axios from 'axios';
 import './chart.css';
 import API_BASE_URL from '../../config';
 
-export const ChartDemo = () => {
+export const BarChart = ({data}) => {
     const chartRef = useRef(null);
     const colors = ['#ff0000',
                     '#ff4000',
@@ -16,24 +16,17 @@ export const ChartDemo = () => {
                     '#40ff00',
                     '#00ff00',
                 ];
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        axios({
-            method: 'GET',
-            url: `${API_BASE_URL}get-listen`,
-        }).then(res => {
-            setData(res.data);
-        }).catch(err => {
-            console.log(err);
-        });
-    }, []);
+    
 
     useEffect(() => {
+        console.log('====================================');
+        console.log("len", data);
+        console.log('====================================');
         const options = {
             chart: {
                 type: 'bar',
                 height: 350,
-                width: 700,
+                width: 1700,
             },
             grid: {
                 show: false,

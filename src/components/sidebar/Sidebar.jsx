@@ -28,15 +28,15 @@ export const Sidebar = () => {
                         'Authorization': `Bearer ${access_token}`
                     }
                 });
-                setAccountLogin({
+                dispatch(setAccountLogin({
                     ...response.data,
                     isLogin: true
-                });
+                }));
             } catch (error) {
                 console.log(error);
             }
         }
-    }, [access_token]);
+    });
 
     useEffect(() => {
         fetchData();
@@ -126,10 +126,10 @@ export const Sidebar = () => {
                     </a>
                 </li>
                 <li>
-                    <a href="#">
+                    <Link to="/user">
                         <box-icon name='dashboard' type='solid' flip='vertical' color='#565656' ></box-icon>
                         <span className="text">You</span>
-                    </a>
+                    </Link>
                 </li>
             </ul>
             <ul className="side-menu center">
