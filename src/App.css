@@ -1,0 +1,121 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body{
+  background-color: #040404;
+  position: relative;
+}
+a {
+	text-decoration: none;
+}
+
+ol, ul{
+    padding: 0;
+}
+:root {
+	--poppins: 'Poppins', sans-serif;
+	--lato: 'Lato', sans-serif;
+
+	--light: #101010;
+	--blue: #03C04A;
+	--light-blue: #CFE8FF;
+	--grey: #040404;
+	--dark-grey: #AAAAAA;
+	--dark: #342E37;
+	--red: #DB504A;
+	--yellow: #FFCE26;
+	--light-yellow: #FFF2C6;
+	--orange: #FD7238;
+	--light-orange: #FFE0D3;
+  
+}
+
+
+li{
+  list-style: none;
+}
+.no-padding {
+  padding: 0 !important;
+}
+.no-margin{
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.no-border{
+  border: none !important;
+}
+.struncate{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+}
+
+
+
+#content {
+	position: relative;
+	width: calc(100% - 200px);
+	left: 200px;
+	transition: .3s ease;
+  min-height: 100vh;
+
+  margin-bottom: 96px;
+}
+
+#sidebar.hide ~ #content {
+	width: calc(100% - 60px);
+	left: 60px;
+}
+
+
+.loading{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #040404;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.loading h1{
+  /* scale: 1.2; */
+  font-size: 36px;
+  color: #ccc;
+}

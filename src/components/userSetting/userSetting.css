@@ -1,0 +1,87 @@
+.user-setting {
+    position: relative;
+    background: #313338;
+    backdrop-filter: blur(40px);
+    overflow: hidden;
+    transition: transform .5s ease, height .2s ease;
+    z-index: 10;
+    padding: 24px;
+    color: #fff;
+    height: 100vh;
+}
+
+.user-setting__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 48px;
+}
+
+.user-setting__content {
+    display: flex;
+    padding: 16px;
+    height: 100%;
+
+}
+
+.user-setting__content__left {
+    width: 20%;
+    height: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-right: 16px;
+}
+
+.user-setting__content__right {
+    width: 80%;
+    height: 100%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.user-setting__content__left__item h4 {
+    margin: 0;
+}
+
+.user-setting__content__left__item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+
+.user-setting__content__left__item:hover {
+    background: #545456;
+}
+
+.user-setting__content__left__item.active {
+    background: #2B2D31;
+}
+.user-setting__content__left__title{
+    font-size: 20px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+.user-setting__content__left__item__content {
+    font-size: 16px;
+    font-weight: 400px;
+}
+.user-setting__content__right {
+    /* ... */
+    overflow: auto;
+    overflow-y: scroll;
+    /* ẩn thanh cuộn ngang và dọc */
+    scrollbar-width: none;
+    /* ẩn thanh cuộn trên Firefox */
+    -ms-overflow-style: none;
+}
+.user-setting__content__right::-webkit-scrollbar {
+    /* ẩn thanh cuộn trên Chrome và Safari */
+    display: none;
+}
+

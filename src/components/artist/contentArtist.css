@@ -1,0 +1,46 @@
+.wrapper-content{
+    position: relative;
+    margin-right: auto;
+    min-height: 100vh;
+}
+.song-item-artist {
+    display: grid;
+    grid-template-columns: [first] 0.5fr [var1] 2fr [var2] 2.2fr [last] 60px;
+    align-items: center;
+    padding: 16px;
+    font-size: 24px;
+    color: #fff;
+    gap: 16px;
+    border-bottom: 1px solid #2e2e2e;
+}
+
+.song-item-artist div {
+    font-family: 'Nunito Sans', sans-serif;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+
+.song-item-artist:hover {
+    border-radius: 8px;
+    background-color: #1d1d1d;
+}
+
+.song-item-artist:hover .song-item-artist__img img{
+    opacity: 0.3;
+}
+.song-item-artist__img{
+    position: relative;
+    width: 48px;
+}
+.song-item-play-btn{
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.song-item-artist:hover .song-item-play-btn{
+    display: block;
+    cursor: pointer;;
+}

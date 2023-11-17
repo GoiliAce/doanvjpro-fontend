@@ -1,0 +1,102 @@
+.search__content{
+    margin: 40px;
+}
+.search h2{
+    color: #fff;
+}
+.search h2 i{
+    color: var(--blue)
+}
+.search__content__list_song{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 16px;
+    margin-bottom: 16px;
+    color: #fff;
+    width: 100%;
+}
+.search__content__list_song__item{
+    min-width: 50%;
+    list-style: none;
+    display: flex;
+    padding: 10px 25px;
+}
+.search__content__list_song__item_wrapper{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    background-color: #1d1d1d;
+    border-radius: 8px;
+}
+.search__content__list_song__item__img{
+    position: relative;
+    border-radius: 8%  0 0 8%;
+    overflow: hidden;
+}
+.search__content__list_song__item__info h3{
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin: 0;
+}
+.search__content__list_song__item__img:hover .song-item-play-btn{
+    display: block;
+    cursor: pointer;
+}
+.search__content__list_song__item__img:hover img{
+    opacity: 0.3;
+}
+
+
+/* albums */
+.search__content__list_album{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 16px;
+    margin-bottom: 16px;
+    color: #fff;
+    width: 100%;
+}
+.search__content__list_album__item{
+    width: 33.33333333%;
+    list-style: none;
+    display: flex;
+    padding: 15px 25px;
+}
+.search__content__list_album__item_wrapper{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+    background-color: #1d1d1d;
+    border-radius: 8px;
+}
+
+/* artists */
+.search__content__list_artist{
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 16px;
+    margin-bottom: 16px;
+    color: #fff;
+    width: 100%;
+}
+.search__content__list_artist__item{
+    width: 25%;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 25px;
+}
+.search__content__list_artist__item__img{
+    position: relative;
+    border-radius: 50%;
+    overflow: hidden;
+}
+.search__content__list_artist__item__info h4{
+    margin-top: 8px;
+}
